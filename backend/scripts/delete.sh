@@ -1,0 +1,1 @@
+curl -X DELETE http://localhost:3000/api/customers/98584
