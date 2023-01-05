@@ -9,6 +9,7 @@ let dh = require("./data/datahandler");
 // nothing in root direcory
 app.get("/", (req, res) => {
   res.send("Nothing implemented, please checkout ./api");
+  console.log(`Sent "Nothing impl." to ${req.hostname} - ${req.ip} `)
 });
 
 // get all customers
@@ -16,6 +17,7 @@ app.get("/api/customers", (req, res) => {
   dh.load().then((val) => {
     res.set("Access-Control-Allow-Origin","*")
     res.send(JSON.parse(val));
+    console.log(`Sent "Customers" to ${req.hostname} - ${req.ip}`)
   });
 });
 
@@ -29,8 +31,12 @@ app.get("/api/customers/:id", (req, res) => {
 
     if (customer) {
       res.send(customer);
+      console.log(`Sent "Customer with ID ${req.params.id}" to ${req.hostname} - ${req.ip}`)
+
     } else {
       res.status(404).send(`Customer with id: ${req.params.id} not found`);
+      console.log(`Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`)
+
     }
   });
 });
@@ -42,7 +48,7 @@ app.post("/api/customers", (req, res) => {
     val = JSON.parse(val);
     val.push(req.body);
     dh.save(val);
-    console.log(`Posted new Customer:`);
+    console.log(`Posted new customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`)
     console.log(req.body);
     res.send(req.body);
   });
@@ -57,6 +63,8 @@ app.put("/api/customers/:id", (req, res) => {
       .send(
         `The Object posted doesn't have the same ID as the one of the Query! `
       );
+      console.log(`Sent "The Object posted doesn't have the same ID as the one of the Query!" to ${req.hostname} - ${req.ip}`)
+
     return;
   }
 
@@ -73,11 +81,13 @@ app.put("/api/customers/:id", (req, res) => {
         })
       ] = req.body;
       dh.save(val);
-      console.log(`Put new data for Customer with ID: ${customer.id}`);
+      console.log(`Put new data to customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`)
       console.log(req.body);
       res.send(req.body);
     } else {
       res.status(404).send(`Customer with id: ${req.params.id} not found`);
+      console.log(`Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`)
+
     }
   });
 });
@@ -97,8 +107,12 @@ app.delete("/api/customers/:id", (req, res) => {
 
       dh.save(val);
       res.send(`The Customer with ID: ${customer.id} was deleted`);
+      console.log(`Deleted customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`)
+
     } else {
       res.status(404).send(`Customer with id: ${req.params.id} not found`);
+      console.log(`Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`)
+
     }
   });
 });
