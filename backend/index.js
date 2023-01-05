@@ -1,5 +1,6 @@
 const express = require("express");
 var bodyParser = require("body-parser");
+const cors = require("cors");
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -13,6 +14,7 @@ app.get("/", (req, res) => {
 // get all customers
 app.get("/api/customers", (req, res) => {
   dh.load().then((val) => {
+    res.set("Access-Control-Allow-Origin","*")
     res.send(JSON.parse(val));
   });
 });
@@ -107,10 +109,21 @@ app.use((req, res, next) => {
     .send("The page you tried to acces wasn't found on the sever! 404\n");
 });
 
+// Cors so the api can be easily accessed
+const corsOptions = {
+  origin: "*",
+};
+app.use(
+  cors({
+    origin: "http://localhost",
+    optionsSuccessStatus: 200,
+  })
+);
+
 // Port is set to env-var EXPRESS_PORT, with port 3000 as default.
 const port = process.env.EXPRESS_PORT ? +process.env.EXPRESS_PORT : 3000;
 
 // start server
 app.listen(port, () => {
-  console.log(`ExpressServer running on port ${port} ...`);
+  console.log(`ExpressServer running on port ${port} . . .`);
 });

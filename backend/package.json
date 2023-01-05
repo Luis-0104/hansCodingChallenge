@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index",
-    "dev":"nodemon index --ignore './data/*.json'"
+    "dev": "nodemon index --ignore './data/*.json'"
   },
   "author": "Luis0104",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2"
   }
 }
