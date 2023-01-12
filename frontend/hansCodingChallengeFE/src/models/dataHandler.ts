@@ -1,17 +1,18 @@
 import { customerT } from "./customer";
 import { customersT } from "./customers";
-import { useRootStore } from "./root";
+import { IRootInstance, useRootStore } from "./root";
 
-export const loadData = (store: any) => {
+export const loadData = () : Promise<customersT> => {
   console.log("Fetching data . . .");
-  getCustomers().then((val) => {
-    console.log("Data arrived");
-    store.setCustomers(val);
-  });
+  return getCustomers().then((val)=>{
+    console.log("Data arrived!")
+    return val
+  })
 };
 
 export const saveData = (data: customersT) => {
-  //
+  
+  console.log("Data Saved")
 };
 
 const getCustomers = (): Promise<customersT> => {
@@ -19,6 +20,21 @@ const getCustomers = (): Promise<customersT> => {
     return fetch("http://localhost:3000/api/customers")
       .then((res) => res.json())
       .then((res) => {
+        res.forEach((el:any
+          // {
+          //   id: number;
+          //   user_name: string;
+          //   first_name: string;
+          //   last_name: string;
+          //   birth_date: string | Date; //to be converted
+          //   email: string;
+          //   password: string;
+          //   last_login: string | Date ; //to be converted
+          // }
+          ) => {
+          el.birth_date = new Date()
+          el.last_login = new Date()
+        });
         return res as customersT;
       });
   } catch (error) {
@@ -26,6 +42,7 @@ const getCustomers = (): Promise<customersT> => {
     throw error;
   }
 };
+
 
 const getCustomer = (id: number): Promise<customerT> => {
   return fetch(`http://localhost:3000/api/customers/${id}`)

@@ -46,6 +46,6 @@ export const Customer = types
       self.password = password;
     },
     remove() {
-        getParent<typeof Customers>(self,2).remove(self);
-      }
+      getParent<typeof Customers>(self, 2).remove(self);
+    },
   }));

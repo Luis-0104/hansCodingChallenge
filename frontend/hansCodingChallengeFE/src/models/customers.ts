@@ -3,11 +3,15 @@ import { Customer, customerT } from "./customer";
 export type customersT = customerT[];
 export const Customers = types
   .model({
-    customers: types.optional(types.array(Customer), []),
+    customerList: types.optional(types.array(Customer), []),
   })
   .actions((self) => ({
     addCustomer(customer: customerT) {
-      self.customers.push(customer);
+      self.customerList.push(customer);
+    },
+    setCustomers(customers: customersT){
+      self.customerList.clear()
+      self.customerList.push(...customers)
     },
     remove(customer: customerT) {
       destroy(customer);
@@ -15,7 +19,7 @@ export const Customers = types
   }))
   .views((self) => ({
     getCustomerWithID(id: number): customerT | undefined {
-      for (let c of self.customers) {
+      for (let c of self.customerList) {
         if (c.id == id) {
           return c;
         }
