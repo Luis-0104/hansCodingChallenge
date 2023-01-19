@@ -20,7 +20,13 @@ function App() {
   setLoading(true)
   loadData().then((val) => {
     setCustomers(val);
-  });
+  }).catch((err)=>{
+    
+    setLoading(false);
+    setInformation({
+      title:"Error!", message: err.toString().slice(6), type:"error"
+    })
+  })
 
   return (
     <div className="App">

@@ -18,8 +18,9 @@ export const DeleteAlert = observer(() => {
         selectedCustomer,
         resetSelection,
         selectionType,
+        getCustomerWithID,
       },
-      information: { setInformation, setLoading },
+      information: {setLoading},
     },
   } = useRootStore();
 
@@ -32,7 +33,7 @@ export const DeleteAlert = observer(() => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Delete ${selectedCustomer}`}
+          {`Delete ${getCustomerWithID(selectedCustomer as number)?.first_name} ${getCustomerWithID(selectedCustomer as number)?.last_name}`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

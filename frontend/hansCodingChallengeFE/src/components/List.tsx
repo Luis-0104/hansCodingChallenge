@@ -30,7 +30,6 @@ export const List = observer(() => {
     store: {
       customers: {
         customerList,
-        getCustomerWithID,
         selectCustomerToDelete,
         selectCustomerToEdit,
       },

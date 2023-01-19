@@ -38,7 +38,7 @@ export const Customers = types
 
         deleteCustomer(self.selectedCustomer)
           .then((val) => {
-            console.log(`deleted user: ${c.id} bzw. ${id}`);
+            console.log(`deleted user: ${c.id} bzw. ${id}: ${val}`);
             if (val) {
               getParent<typeof RootModel>(self, 1).information.setInformation({
                 title: "Succes!",
@@ -46,7 +46,11 @@ export const Customers = types
                 type: "success",
               });
             } else {
-              //TODO: Eleganter weg, um bei einer Fehlgeschlagenen Request den Error oben anzuzeigen
+              getParent<typeof RootModel>(self, 1).information.setInformation({
+                title: "Error!",
+                message: `Deleting ${c.first_name} ${c.last_name} failed! Please try again later!`,
+                type: "error",
+              });
             }
           })
           // after the deletion the data gets synced again to provide consistency

@@ -1,15 +1,14 @@
-import { identifier, number } from "mobx-state-tree/dist/internal";
+import { boolean, identifier, number } from "mobx-state-tree/dist/internal";
 import { customerT } from "./customer";
 import { customersT } from "./customers";
 import { IRootInstance, useRootStore } from "./root";
 
-
-export const loadData = (): Promise<customersT> => {
+export const loadData = (): Promise<customersT > => {
   console.log("Fetching data . . .");
   return getCustomers().then((val) => {
     console.log("Data arrived!");
     return val;
-  });
+  })
 };
 
 export const saveData = (data: customersT) => {
@@ -19,7 +18,14 @@ export const saveData = (data: customersT) => {
 const getCustomers = (): Promise<customersT> => {
   try {
     return fetch("http://localhost:3000/api/customers")
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .catch((err)=>{
+        throw new Error("Failed to fetch the customers. Please try again later!");
+      })
       .then((res) => {
         res.forEach(
           (
@@ -66,7 +72,6 @@ const createCustomer = (customer: customerT): void => {
 };
 const updateCustomer = (customer: customerT): void => {};
 
-
 export const deleteCustomer = (
   customer: { id: number } | number
 ): Promise<boolean> => {
@@ -80,6 +85,6 @@ export const deleteCustomer = (
     },
   }).then((val) => {
     console.log(`Deleted Customer with ID ${customer}`);
-    return true;
+    return val.ok;
   });
 };
