@@ -5,7 +5,7 @@ import { loadData, saveData } from "./dataHandler";
 import { Info } from "./info";
 
 // Declaring the Root Model.
-const RootModel = types.model({
+export const RootModel = types.model({
   customers: Customers,
   information: Info,
 });

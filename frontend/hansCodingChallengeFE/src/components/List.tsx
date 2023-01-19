@@ -34,16 +34,17 @@ export const List = observer(() => {
         selectCustomerToDelete,
         selectCustomerToEdit,
       },
-      information: { set },
+      information: { setInformation },
     },
   } = useRootStore();
-  const setInfo = set;
+  
   const rows: GridRowsProp = customerList.map((el) => {
     return {
       ...el,
     };
   });
 
+ 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "user_name", headerName: "USERNAME", minWidth: 130, flex: 0.5 },

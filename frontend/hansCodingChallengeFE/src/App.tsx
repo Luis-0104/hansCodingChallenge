@@ -7,11 +7,19 @@ import { Button, ButtonGroup } from "@mui/material";
 import { getSnapshot } from "mobx-state-tree";
 
 function App() {
-  const rootStore = useRootStore();
+  const {
+    store: {
+      customers: {
+        setCustomers
+      },
+      information: { setInformation, setLoading },
+    },
+  } = useRootStore();
+  
   // Before creating any of the models, we need to fetch the data from the api
-  const data = loadData();
-  data.then((val) => {
-    rootStore.store.customers.setCustomers(val);
+  setLoading(true)
+  loadData().then((val) => {
+    setCustomers(val);
   });
 
   return (
@@ -26,9 +34,10 @@ function App() {
       >
         <ButtonGroup variant="outlined" aria-label="outlined button group">
           <Button onClick={(evt)=>{
+            setLoading(true)
             const data = loadData();
             data.then((val) => {
-              rootStore.store.customers.setCustomers(val);
+              setCustomers(val);
             });
           }}>LOAD</Button>
         </ButtonGroup>

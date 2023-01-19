@@ -22,6 +22,9 @@ export const Customers = types
     setCustomers(customers: customersT) {
       self.customerList.clear();
       self.customerList.push(...customers);
+      setTimeout(() => {
+        getParent<typeof RootModel>(self, 1).information.setLoading(false);
+      }, 3000); //After Fetching, let the loadingbar stay for 3 seconds, during rendering 
     },
     removeSelectedCustomer() {
       if (self.selectedCustomer) {
@@ -32,17 +35,17 @@ export const Customers = types
             break;
           }
         }
-        
+
         deleteCustomer(self.selectedCustomer)
           .then((val) => {
-            console.log(`deleted user: ${c.id} bzw. ${id}`)
+            console.log(`deleted user: ${c.id} bzw. ${id}`);
             if (val) {
               getParent<typeof RootModel>(self, 1).information.setInformation({
                 title: "Succes!",
                 message: `Deleted ${c.first_name} ${c.last_name} succesfully!`,
-                type: "succes",
+                type: "success",
               });
-            }else{
+            } else {
               //TODO: Eleganter weg, um bei einer Fehlgeschlagenen Request den Error oben anzuzeigen
             }
           })

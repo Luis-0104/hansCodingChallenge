@@ -19,7 +19,7 @@ export const DeleteAlert = observer(() => {
         resetSelection,
         selectionType,
       },
-      information: { set },
+      information: { setInformation, setLoading },
     },
   } = useRootStore();
 
@@ -43,6 +43,8 @@ export const DeleteAlert = observer(() => {
           <Button onClick={() => {
               removeSelectedCustomer();
               resetSelection();
+              setLoading(true);
+            
             }}>Yes</Button>
           <Button
             onClick={resetSelection}
