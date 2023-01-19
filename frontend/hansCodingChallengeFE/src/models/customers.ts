@@ -1,6 +1,13 @@
-import { SnapshotIn, destroy, onSnapshot, types } from "mobx-state-tree";
+import {
+  SnapshotIn,
+  destroy,
+  getParent,
+  onSnapshot,
+  types,
+} from "mobx-state-tree";
 import { Customer, customerT } from "./customer";
-import { deleteCustomer } from "./dataHandler";
+import { deleteCustomer, loadData } from "./dataHandler";
+import { RootModel } from "./root";
 export type customersT = customerT[];
 export const Customers = types
   .model({
@@ -18,7 +25,32 @@ export const Customers = types
     },
     removeSelectedCustomer() {
       if (self.selectedCustomer) {
-        deleteCustomer(self.selectedCustomer);
+        let c: SnapshotIn<typeof Customer>;
+        const id = self.selectedCustomer;
+        for (c of self.customerList) {
+          if (c.id == id) {
+            break;
+          }
+        }
+        
+        deleteCustomer(self.selectedCustomer)
+          .then((val) => {
+            console.log(`deleted user: ${c.id} bzw. ${id}`)
+            if (val) {
+              getParent<typeof RootModel>(self, 1).information.setInformation({
+                title: "Succes!",
+                message: `Deleted ${c.first_name} ${c.last_name} succesfully!`,
+                type: "succes",
+              });
+            }else{
+              //TODO: Eleganter weg, um bei einer Fehlgeschlagenen Request den Error oben anzuzeigen
+            }
+          })
+          // after the deletion the data gets synced again to provide consistency
+          .then(loadData)
+          .then((val) => {
+            getParent<typeof RootModel>(self, 1).customers.setCustomers(val);
+          });
       }
     },
     selectCustomerToDelete(id: number) {
@@ -31,7 +63,6 @@ export const Customers = types
           return;
         }
       }
-      
     },
     selectCustomerToEdit(id: number) {
       for (let c of self.customerList) {
