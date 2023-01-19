@@ -36,7 +36,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="add" element={<AddPerson />} />
+          <Route path="addPerson" element={<AddPerson />} />
           <Route path="*" element={<>nothing</>} />
           <Route path="edit/*" element={<>nothindfdg</>} />
         </Routes>

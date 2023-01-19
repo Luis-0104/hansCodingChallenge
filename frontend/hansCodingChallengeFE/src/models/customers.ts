@@ -96,4 +96,12 @@ export const Customers = types
       }
       return undefined;
     },
+    getCustomerWithUserName(userName: string): customerT | undefined {
+      for (let c of self.customerList) {
+        if (c.user_name == userName) {
+          return c;
+        }
+      }
+      return undefined;
+    },
   }));
