@@ -15,6 +15,7 @@ export const Home = () => {
       information: { setLoading },
     },
   } = useRootStore();
+  
   return (
     <div
       style={{

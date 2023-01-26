@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Router,
+  HashRouter,
+} from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
-import { useRootStore } from "./models/root";
+import { RootContextProvider, useRootStore } from "./models/root";
 import { loadData, saveData } from "./models/dataHandler";
 import { Button, ButtonGroup } from "@mui/material";
 import { getSnapshot } from "mobx-state-tree";
 import { AddPerson } from "./pages/AddPerson";
+import { Infobox } from "./components/Infobox";
+import React from "react";
 
 function App() {
   const {
@@ -33,7 +41,10 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <React.StrictMode>
+        
+      <RootContextProvider value={useRootStore()}>
+         <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
           <Route path="addPerson" element={<AddPerson />} />
@@ -41,6 +52,9 @@ function App() {
           <Route path="edit/*" element={<>nothindfdg</>} />
         </Routes>
       </BrowserRouter>
+      </RootContextProvider>
+      </React.StrictMode>
+     
     </div>
   );
 }

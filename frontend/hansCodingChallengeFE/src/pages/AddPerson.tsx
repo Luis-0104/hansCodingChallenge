@@ -19,7 +19,7 @@ export const AddPerson = observer(() => {
   } = useRootStore();
 
   const addPerson = () => {
-    createCustomer({
+    addCustomer({
       id: +inputForm.getElement("customer_number").value,
       user_name: inputForm.getElement("user_name").value.toString(),
       first_name: inputForm.getElement("first_name").value.toString(),

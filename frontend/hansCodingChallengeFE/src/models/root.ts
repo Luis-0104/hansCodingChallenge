@@ -8,19 +8,24 @@ import { InputForm } from "./inputForm";
 export const RootModel = types.model({
   customers: Customers,
   information: Info,
-  inputForm: InputForm
+  inputForm: InputForm,
 });
 
+let cookieInfo = {};
+if (sessionStorage.getItem("information")) {
+  cookieInfo = JSON.parse(sessionStorage.getItem("information") as string);
+}
 let initialState = RootModel.create({
   customers: Customers.create({}),
-  information: Info.create({}),
-  inputForm: InputForm.create({})
+  information: Info.create(cookieInfo),
+  inputForm: InputForm.create({}),
 });
-
+console.log("rootstore")
 const rootStoreInstance = initialState;
 
 onSnapshot(rootStoreInstance, (snapshot) => {
   console.log("Snapshot: ", snapshot);
+  sessionStorage.setItem("information",JSON.stringify(rootStoreInstance.information))
 });
 
 export interface IRootInstance extends Instance<typeof RootModel> {}
@@ -34,4 +39,4 @@ export const useRootStore = () => {
   return useContext(RootContext);
 };
 
-export const Provider = RootContext.Provider;
+export const RootContextProvider = RootContext.Provider;

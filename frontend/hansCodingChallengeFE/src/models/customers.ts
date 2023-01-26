@@ -8,6 +8,7 @@ import {
 import { Customer, customerT } from "./customer";
 import { createCustomer, deleteCustomer, loadData } from "./dataHandler";
 import { RootModel } from "./root";
+import { useNavigate } from "react-router-dom";
 export type customersT = customerT[];
 export const Customers = types
   .model({
@@ -19,15 +20,27 @@ export const Customers = types
     addCustomer(customer: customerT) {
       self.customerList.push(customer);
       createCustomer(customer)
-      .catch((err) => {
-        getParent<typeof RootModel>(self, 1).information.setLoading(false);
-        getParent<typeof RootModel>(self, 1).information.setInformation({
-          title: "Error!",
-          message: err.toString().slice(6),
-          type: "error",
+        .then((val) => {
+          getParent<typeof RootModel>(self, 1).information.setLoading(false);
+          getParent<typeof RootModel>(self, 1).information.setInformation({
+            title: "Succes!",
+            message: `${customer.first_name} ${customer.last_name} has been added to the system`,
+            type: "success",
+          });
+          setTimeout(() => {
+            window.location.replace("/");
+          }, 1000);
+          return new Promise(() => {});
+        })
+        .catch((err) => {
+          getParent<typeof RootModel>(self, 1).information.setLoading(false);
+          getParent<typeof RootModel>(self, 1).information.setInformation({
+            title: "Error!",
+            message: err.toString().slice(6),
+            type: "error",
+          });
+          return new Promise(() => {});
         });
-        return new Promise(() => {});
-      })
     },
     setCustomers(customers: customersT) {
       self.customerList.clear();
