@@ -42,19 +42,17 @@ function App() {
   return (
     <div className="App">
       <React.StrictMode>
-        
-      <RootContextProvider value={useRootStore()}>
-         <BrowserRouter>
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="addPerson" element={<AddPerson />} />
-          <Route path="*" element={<>nothing</>} />
-          <Route path="edit/*" element={<>nothindfdg</>} />
-        </Routes>
-      </BrowserRouter>
-      </RootContextProvider>
+        <RootContextProvider value={useRootStore()}>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="addPerson" element={<AddPerson />} />
+              <Route path="*" element={<>nothing</>} />
+              <Route path="edit/*" element={<>nothindfdg</>} />
+            </Routes>
+          </BrowserRouter>
+        </RootContextProvider>
       </React.StrictMode>
-     
     </div>
   );
 }

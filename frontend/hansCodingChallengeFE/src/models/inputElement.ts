@@ -9,6 +9,8 @@ export type inputElementIDType =
   | "last_name"
   | "user_name"
   | "email"
+  | "birth_date"
+  | "last_login"
   | "password"
   | "repeat_password";
 export type inputElement = {
@@ -25,6 +27,7 @@ export const InputElement = types
       "last_name",
       "user_name",
       "email",
+      "birth_date",
       "password",
       "repeat_password",
     ]),

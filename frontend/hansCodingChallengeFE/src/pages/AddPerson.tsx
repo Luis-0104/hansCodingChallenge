@@ -1,12 +1,9 @@
 import React from "react";
 import { useRootStore } from "../models/root";
-import { Button, Stack, TextField, Tooltip, Typography, styled } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
+import { Button, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Infobox } from "../components/Infobox";
-import { createCustomer } from "../models/dataHandler";
-import { customerT } from "../models/customer";
 import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 
 export const AddPerson = observer(() => {
@@ -24,10 +21,10 @@ export const AddPerson = observer(() => {
       user_name: inputForm.getElement("user_name").value.toString(),
       first_name: inputForm.getElement("first_name").value.toString(),
       last_name: inputForm.getElement("last_name").value.toString(),
-      birth_date: new Date(),
+      birth_date: new Date(inputForm.getElement("birth_date").value),
       email: inputForm.getElement("email").value.toString(),
       password: inputForm.getElement("password").value.toString(),
-      last_login: new Date(),
+      last_login: new Date(), //current timestamp is last login
     });
     setLoading(true);
   };
@@ -41,13 +38,13 @@ export const AddPerson = observer(() => {
     return num;
   }
 
-  const [numberSet, setnumberSet] = React.useState(false)
-  if(!numberSet){
+  const [numberSet, setnumberSet] = React.useState(false);
+  if (!numberSet) {
     inputForm.updateElement(
       "customer_number",
       generateCustomerNumber().toString()
     );
-    setnumberSet(true)
+    setnumberSet(true);
   }
   // TODO: Css in den Griff bekommen, dass das ganze nach was ausschaut
   return (
@@ -57,7 +54,6 @@ export const AddPerson = observer(() => {
           padding: "15px",
         }}
       >
-        
         <Button href="/" variant="outlined">
           <ArrowBackOutlinedIcon />
         </Button>
@@ -82,7 +78,7 @@ export const AddPerson = observer(() => {
               label="Customer-Number"
               type="number"
               variant="standard"
-              value={inputForm.getElement("customer_number").value }
+              value={inputForm.getElement("customer_number").value}
               onBlur={(evt) => {
                 inputForm.updateElement("customer_number", evt.target.value);
               }}
@@ -91,19 +87,18 @@ export const AddPerson = observer(() => {
             />
 
             <Tooltip title="Generate random customer number" placement="right">
-               <Button
-              onClick={() => {
-                inputForm.updateElement(
-                  "customer_number",
-                  generateCustomerNumber().toString()
-                );
-              }}
-              variant="outlined"
-            >
-              <AutorenewOutlinedIcon />
-            </Button>
+              <Button
+                onClick={() => {
+                  inputForm.updateElement(
+                    "customer_number",
+                    generateCustomerNumber().toString()
+                  );
+                }}
+                variant="outlined"
+              >
+                <AutorenewOutlinedIcon />
+              </Button>
             </Tooltip>
-           
           </div>
 
           <TextField
@@ -142,6 +137,17 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("email")?.helptext}
             error={inputForm.getElement("email")?.valid == false}
+          />
+          <TextField
+            variant="standard"
+            label="Date Of Birth"
+            type="date"
+            defaultValue={"2000-01-01"}
+            onBlur={(evt) => {
+              inputForm.updateElement("birth_date", evt.target.value);
+            }}
+            helperText={inputForm.getElement("birth_date")?.helptext}
+            error={inputForm.getElement("birth_date")?.valid == false}
           />
           <TextField
             label="Password"

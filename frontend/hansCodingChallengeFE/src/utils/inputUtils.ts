@@ -1,4 +1,3 @@
-
 import { inputElementIDType } from "./../models/inputElement";
 
 export const validateInput = ({
@@ -34,6 +33,11 @@ export const validateInput = ({
     valid = isEmailAdressValid(val.toString());
     if (!valid) {
       helpText = `Email invalid. Please choose a valid email-adress.`;
+    }
+  } else if (id == "birth_date") {
+    valid = isBirthDateValid(val.toString());
+    if (!valid) {
+      helpText = `Birthdate invalid. Please choose a valid Birthdate.`;
     }
   } else if (id == "password") {
     valid = isPasswordValid(val.toString());
@@ -71,6 +75,15 @@ const isEmailAdressValid = (email: string): boolean => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+};
+
+const isBirthDateValid = (birth_date: string): boolean => {
+  try {
+    let date = new Date(birth_date);
+    return date > new Date("01-01-1900") && date < new Date();
+  } catch (error) {
+    return false;
+  }
 };
 
 const isPasswordValid = (password: string): boolean => {
