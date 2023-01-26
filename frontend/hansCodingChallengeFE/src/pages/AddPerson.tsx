@@ -2,13 +2,17 @@ import React from "react";
 import { useRootStore } from "../models/root";
 import { Stack, TextField, Typography, styled } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
-import { getRandomCustomerNumber, isCustomerNumberValid } from "../utils/inputUtils";
+import {
+  getRandomCustomerNumber,
+} from "../utils/inputUtils";
+import { observer } from "mobx-react-lite";
 
-export const AddPerson = () => {
+export const AddPerson = observer(() => {
   const {
     store: {
       customers: { addCustomer, getCustomerWithID },
       information: { setInformation, setLoading },
+      inputForm,
     },
   } = useRootStore();
 
@@ -18,14 +22,6 @@ export const AddPerson = () => {
       return getRandomFreeCustomerNumber();
     } else {
       return num;
-    }
-  };
-
-  const isCustomerNumberFree = (customerNumber: number): boolean => {
-    if (getCustomerWithID(customerNumber)) {
-      return false;
-    } else {
-      return true;
     }
   };
 
@@ -53,23 +49,71 @@ export const AddPerson = () => {
             variant="standard"
             defaultValue={getRandomFreeCustomerNumber()}
             onBlur={(evt) => {
-              if(!isCustomerNumberValid(+evt.target.value)){
-                
-              }
+              inputForm.updateElement("customer_number", evt.target.value);
             }}
+            helperText={inputForm.getElement("customer_number")?.helptext}
+            error={inputForm.getElement("customer_number")?.valid == false}
           />
-          <TextField label="First Name" variant="standard" />
-          <TextField label="Last Name" variant="standard" />
-          <TextField label="UserName" variant="standard" />
-          <TextField label="Email-Adress" variant="standard" type="email" />
-          <TextField label="Password" type="password" variant="standard" />
+          <TextField
+            label="First Name"
+            variant="standard"
+            onBlur={(evt) => {
+              inputForm.updateElement("first_name", evt.target.value);
+            }}
+            helperText={inputForm.getElement("first_name")?.helptext}
+            error={inputForm.getElement("first_name")?.valid == false}
+          />
+          <TextField
+            label="Last Name"
+            variant="standard"
+            onBlur={(evt) => {
+              inputForm.updateElement("last_name", evt.target.value);
+            }}
+            helperText={inputForm.getElement("last_name")?.helptext}
+            error={inputForm.getElement("last_name")?.valid == false}
+          />
+          <TextField
+            label="UserName"
+            variant="standard"
+            onBlur={(evt) => {
+              inputForm.updateElement("user_name", evt.target.value);
+            }}
+            helperText={inputForm.getElement("user_name")?.helptext}
+            error={inputForm.getElement("user_name")?.valid == false}
+          />
+          <TextField
+            label="Email-Adress"
+            variant="standard"
+            type="email"
+            onBlur={(evt) => {
+              inputForm.updateElement("email", evt.target.value);
+            }}
+            helperText={inputForm.getElement("email")?.helptext}
+            error={inputForm.getElement("email")?.valid == false}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="standard"
+            onBlur={(evt) => {
+              inputForm.updateElement("password", evt.target.value);
+            }}
+            helperText={inputForm.getElement("password")?.helptext}
+            error={inputForm.getElement("password")?.valid == false}
+          />
           <TextField
             label="Repeat Password"
             type="password"
             variant="standard"
+            onBlur={(evt) => {
+              inputForm.updateElement("repeat_password", evt.target.value);
+            }}
+            helperText={inputForm.getElement("repeat_password")?.helptext}
+            error={inputForm.getElement("repeat_password")?.valid == false}
+            disabled = {!inputForm.getElement("password")?.valid}
           />
         </Stack>
       </div>
     </div>
   );
-};
+});
