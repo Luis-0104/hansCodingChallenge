@@ -1,11 +1,13 @@
 import React from "react";
 import { useRootStore } from "../models/root";
-import { Stack, TextField, Typography, styled } from "@mui/material";
+import { Button, Stack, TextField, Tooltip, Typography, styled } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
-import {
-  getRandomCustomerNumber,
-} from "../utils/inputUtils";
 import { observer } from "mobx-react-lite";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { Infobox } from "../components/Infobox";
+import { createCustomer } from "../models/dataHandler";
+import { customerT } from "../models/customer";
+import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 
 export const AddPerson = observer(() => {
   const {
@@ -16,15 +18,37 @@ export const AddPerson = observer(() => {
     },
   } = useRootStore();
 
-  const getRandomFreeCustomerNumber = (): number => {
-    const num = getRandomCustomerNumber();
-    if (getCustomerWithID(num)) {
-      return getRandomFreeCustomerNumber();
-    } else {
-      return num;
-    }
+  const addPerson = () => {
+    createCustomer({
+      id: +inputForm.getElement("customer_number").value,
+      user_name: inputForm.getElement("user_name").value.toString(),
+      first_name: inputForm.getElement("first_name").value.toString(),
+      last_name: inputForm.getElement("last_name").value.toString(),
+      birth_date: new Date(),
+      email: inputForm.getElement("email").value.toString(),
+      password: inputForm.getElement("password").value.toString(),
+      last_login: new Date(),
+    });
+    setLoading(true);
   };
 
+  //Generate random CustomerNumber
+  function generateCustomerNumber() {
+    let num;
+    do {
+      num = Math.floor(Math.random() * 90000) + 10000;
+    } while (getCustomerWithID(num));
+    return num;
+  }
+
+  const [numberSet, setnumberSet] = React.useState(false)
+  if(!numberSet){
+    inputForm.updateElement(
+      "customer_number",
+      generateCustomerNumber().toString()
+    );
+    setnumberSet(true)
+  }
   // TODO: Css in den Griff bekommen, dass das ganze nach was ausschaut
   return (
     <div>
@@ -33,7 +57,12 @@ export const AddPerson = observer(() => {
           padding: "15px",
         }}
       >
+        
+        <Button href="/" variant="outlined">
+          <ArrowBackOutlinedIcon />
+        </Button>
         <Typography variant="h1">Add a new User</Typography>
+        <Infobox />
       </div>
       <div
         style={{
@@ -43,17 +72,40 @@ export const AddPerson = observer(() => {
         }}
       >
         <Stack spacing={2}>
-          <TextField
-            label="Customer-Number"
-            type="number"
-            variant="standard"
-            defaultValue={getRandomFreeCustomerNumber()}
-            onBlur={(evt) => {
-              inputForm.updateElement("customer_number", evt.target.value);
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
             }}
-            helperText={inputForm.getElement("customer_number")?.helptext}
-            error={inputForm.getElement("customer_number")?.valid == false}
-          />
+          >
+            <TextField
+              label="Customer-Number"
+              type="number"
+              variant="standard"
+              value={inputForm.getElement("customer_number").value }
+              onBlur={(evt) => {
+                inputForm.updateElement("customer_number", evt.target.value);
+              }}
+              helperText={inputForm.getElement("customer_number")?.helptext}
+              error={inputForm.getElement("customer_number")?.valid == false}
+            />
+
+            <Tooltip title="Generate random customer number" placement="right">
+               <Button
+              onClick={() => {
+                inputForm.updateElement(
+                  "customer_number",
+                  generateCustomerNumber().toString()
+                );
+              }}
+              variant="outlined"
+            >
+              <AutorenewOutlinedIcon />
+            </Button>
+            </Tooltip>
+           
+          </div>
+
           <TextField
             label="First Name"
             variant="standard"
@@ -110,8 +162,10 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("repeat_password")?.helptext}
             error={inputForm.getElement("repeat_password")?.valid == false}
-            disabled = {!inputForm.getElement("password")?.valid}
           />
+          <Button onClick={addPerson} disabled={!inputForm.isAllValid()}>
+            SUMBMIT
+          </Button>
         </Stack>
       </div>
     </div>

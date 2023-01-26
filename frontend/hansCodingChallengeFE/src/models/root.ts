@@ -1,18 +1,20 @@
 import { Instance, onSnapshot, SnapshotIn, types } from "mobx-state-tree";
 import { createContext, useContext, useState } from "react";
 import { Customers, customersT } from "./customers";
-import { loadData, saveData } from "./dataHandler";
 import { Info } from "./info";
+import { InputForm } from "./inputForm";
 
 // Declaring the Root Model.
 export const RootModel = types.model({
   customers: Customers,
   information: Info,
+  inputForm: InputForm
 });
 
 let initialState = RootModel.create({
   customers: Customers.create({}),
-  information: Info.create({})
+  information: Info.create({}),
+  inputForm: InputForm.create({})
 });
 
 const rootStoreInstance = initialState;

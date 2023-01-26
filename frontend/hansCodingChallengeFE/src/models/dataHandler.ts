@@ -3,12 +3,12 @@ import { customerT } from "./customer";
 import { customersT } from "./customers";
 import { IRootInstance, useRootStore } from "./root";
 
-export const loadData = (): Promise<customersT > => {
+export const loadData = (): Promise<customersT> => {
   console.log("Fetching data . . .");
   return getCustomers().then((val) => {
     console.log("Data arrived!");
     return val;
-  })
+  });
 };
 
 export const saveData = (data: customersT) => {
@@ -23,8 +23,10 @@ const getCustomers = (): Promise<customersT> => {
           return res.json();
         }
       })
-      .catch((err)=>{
-        throw new Error("Failed to fetch the customers. Please try again later!");
+      .catch((err) => {
+        throw new Error(
+          "Failed to fetch the customers. Please try again later!"
+        );
       })
       .then((res) => {
         res.forEach(
@@ -41,8 +43,8 @@ const getCustomers = (): Promise<customersT> => {
             //   last_login: string | Date ; //to be converted
             // }
           ) => {
-            el.birth_date = new Date();
-            el.last_login = new Date();
+            el.birth_date = new Date(el.birth_date);
+            el.last_login = new Date(el.last_login);
           }
         );
         return res as customersT;
@@ -60,15 +62,21 @@ const getCustomer = (id: number): Promise<customerT> => {
       return res as customerT;
     });
 };
-
-const createCustomer = (customer: customerT): void => {
-  fetch("http://localhost:3000/api/customers", {
+export const createCustomer = (customer: customerT): Promise<boolean> => {
+  return fetch("http://localhost:3000/api/customers", {
     method: "POST",
     body: JSON.stringify(customer),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-  });
+  })
+    .then((val) => {
+      console.log(`Created Customer with ID ${customer.id}`);
+      return val.ok;
+    })
+    .catch((err) => {
+      throw new Error(`${err}`);
+    });
 };
 const updateCustomer = (customer: customerT): void => {};
 
@@ -83,8 +91,14 @@ export const deleteCustomer = (
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-  }).then((val) => {
-    console.log(`Deleted Customer with ID ${customer}`);
-    return val.ok;
-  });
+  })
+    .then((val) => {
+      console.log(`Deleted Customer with ID ${customer}`);
+      return val.ok;
+    })
+    .catch((err) => {
+      throw new Error(
+        `Failed to delete customer with id ${customer}. Please try again later!`
+      );
+    });
 };

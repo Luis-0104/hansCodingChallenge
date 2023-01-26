@@ -6,7 +6,7 @@ import {
   types,
 } from "mobx-state-tree";
 import { Customer, customerT } from "./customer";
-import { deleteCustomer, loadData } from "./dataHandler";
+import { createCustomer, deleteCustomer, loadData } from "./dataHandler";
 import { RootModel } from "./root";
 export type customersT = customerT[];
 export const Customers = types
@@ -18,13 +18,23 @@ export const Customers = types
   .actions((self) => ({
     addCustomer(customer: customerT) {
       self.customerList.push(customer);
+      createCustomer(customer)
+      .catch((err) => {
+        getParent<typeof RootModel>(self, 1).information.setLoading(false);
+        getParent<typeof RootModel>(self, 1).information.setInformation({
+          title: "Error!",
+          message: err.toString().slice(6),
+          type: "error",
+        });
+        return new Promise(() => {});
+      })
     },
     setCustomers(customers: customersT) {
       self.customerList.clear();
       self.customerList.push(...customers);
       setTimeout(() => {
         getParent<typeof RootModel>(self, 1).information.setLoading(false);
-      }, 3000); //After Fetching, let the loadingbar stay for 3 seconds, during rendering 
+      }, 1000); //After Fetching, let the loadingbar stay for 3 seconds, during rendering
     },
     removeSelectedCustomer() {
       if (self.selectedCustomer) {
@@ -37,6 +47,15 @@ export const Customers = types
         }
 
         deleteCustomer(self.selectedCustomer)
+          .catch((err) => {
+            getParent<typeof RootModel>(self, 1).information.setLoading(false);
+            getParent<typeof RootModel>(self, 1).information.setInformation({
+              title: "Error!",
+              message: err.toString().slice(6),
+              type: "error",
+            });
+            return new Promise(() => {});
+          })
           .then((val) => {
             console.log(`deleted user: ${c.id} bzw. ${id}: ${val}`);
             if (val) {
@@ -53,6 +72,7 @@ export const Customers = types
               });
             }
           })
+
           // after the deletion the data gets synced again to provide consistency
           .then(loadData)
           .then((val) => {

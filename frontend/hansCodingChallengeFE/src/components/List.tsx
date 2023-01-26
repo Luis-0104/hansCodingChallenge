@@ -28,22 +28,20 @@ import { DeleteAlert } from "./DeleteAlert";
 export const List = observer(() => {
   const {
     store: {
-      customers: {
-        customerList,
-        selectCustomerToDelete,
-        selectCustomerToEdit,
-      },
+      customers: { customerList, selectCustomerToDelete, selectCustomerToEdit },
       information: { setInformation },
     },
   } = useRootStore();
-  
-  const rows: GridRowsProp = customerList.map((el) => {
+  const rawsRAW = customerList.map((el) => {
     return {
       ...el,
+      birth_date: el.birth_date.toLocaleDateString(),
+      last_login : el.last_login.toLocaleString(),
     };
+    
   });
+  const rows: GridRowsProp = rawsRAW
 
- 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "user_name", headerName: "USERNAME", minWidth: 130, flex: 0.5 },

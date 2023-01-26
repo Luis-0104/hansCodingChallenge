@@ -45,7 +45,4 @@ export const Customer = types
     setPassword(password: string) {
       self.password = password;
     },
-    remove() {
-      getParent<typeof Customers>(self, 2).removeSelectedCustomer(self);
-    },
   }));

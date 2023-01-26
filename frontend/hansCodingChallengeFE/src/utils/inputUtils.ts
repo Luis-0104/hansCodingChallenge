@@ -1,6 +1,4 @@
-export const getRandomCustomerNumber = (): number => {
-  return Math.floor(Math.random() * 90000) + 10000;
-};
+
 import { inputElementIDType } from "./../models/inputElement";
 
 export const validateInput = ({
