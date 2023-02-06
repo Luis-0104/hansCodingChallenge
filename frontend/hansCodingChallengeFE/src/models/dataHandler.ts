@@ -72,13 +72,41 @@ export const createCustomer = (customer: customerT): Promise<boolean> => {
   })
     .then((val) => {
       console.log(`Created Customer with ID ${customer.id}`);
+
       return val.ok;
     })
     .catch((err) => {
       throw new Error(`${err}`);
     });
 };
-const updateCustomer = (customer: customerT): void => {};
+export const updateCustomer = (
+  customer: customerT,
+  oldID?: number
+): Promise<boolean> => {
+  if (!oldID) {
+    // ID stays the same
+    oldID = customer.id;
+  }
+  return fetch(`http://localhost:3000/api/customers/${oldID}`, {
+    method: "PUT",
+    body: JSON.stringify(customer),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .catch((err) => {
+      throw new Error(`${err}`);
+    })
+    .then((val) => {
+      console.log(`Updated Customer ${customer}`);
+      if (!val.ok) {
+        throw new Error(
+          `Updating ${customer.first_name} ${customer.last_name} failed (${val.statusText} - ${val.status})`
+        );
+      }
+      return val.ok;
+    });
+};
 
 export const deleteCustomer = (
   customer: { id: number } | number
