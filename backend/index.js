@@ -69,19 +69,7 @@ app.post("/api/customers", (req, res) => {
 
 // update customer
 app.put("/api/customers/:id", (req, res) => {
-  // Check if the query's ID is the same as the body's
-  if (req.params.id != req.body.id) {
-    res
-      .status(422)
-      .send(
-        `The Object posted doesn't have the same ID as the one of the Query! `
-      );
-    console.log(
-      `Sent "The Object posted doesn't have the same ID as the one of the Query!" to ${req.hostname} - ${req.ip}`
-    );
-
-    return;
-  }
+  
 
   dh.load().then((val) => {
     val = JSON.parse(val);
