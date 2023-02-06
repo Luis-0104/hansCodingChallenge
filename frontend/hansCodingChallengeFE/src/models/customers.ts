@@ -1,4 +1,5 @@
 import {
+  Instance,
   SnapshotIn,
   destroy,
   getParent,
@@ -121,7 +122,7 @@ export const Customers = types
   }))
 
   .views((self) => ({
-    getCustomerWithID(id: number): customerT | undefined {
+    getCustomerWithID(id: number): Instance<typeof Customer> | undefined {
       for (let c of self.customerList) {
         if (c.id == id) {
           return c;
@@ -129,6 +130,7 @@ export const Customers = types
       }
       return undefined;
     },
+
     getCustomerWithUserName(userName: string): customerT | undefined {
       for (let c of self.customerList) {
         if (c.user_name == userName) {
