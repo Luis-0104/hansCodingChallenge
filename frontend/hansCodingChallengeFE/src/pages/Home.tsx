@@ -2,7 +2,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { List } from "../components/List";
 import { Infobox } from "../components/Infobox";
-import { loadData, saveData } from "../models/dataHandler";
+import { loadData, saveData } from "../utils/dataHandler";
 import { Button, ButtonGroup } from "@mui/material";
 import { getSnapshot } from "mobx-state-tree";
 import { AddPerson } from "./AddPerson";

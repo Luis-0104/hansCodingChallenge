@@ -41,8 +41,9 @@ export interface IRootInstance extends Instance<typeof RootModel> {}
 type RootContext = {
   store: IRootInstance;
 };
-const RootContext = createContext({ store: rootStoreInstance });
 
+
+const RootContext = createContext({ store: rootStoreInstance });
 export const useRootStore = () => {
   return useContext(RootContext);
 };

@@ -6,7 +6,7 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Infobox } from "../components/Infobox";
 import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { useLocation } from "react-router-dom";
-import { updateCustomer } from "../models/dataHandler";
+import { updateCustomer } from "../utils/dataHandler";
 import { Instance } from "mobx-state-tree";
 import { Customer } from "../models/customer";
 

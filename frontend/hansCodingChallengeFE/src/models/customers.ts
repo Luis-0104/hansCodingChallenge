@@ -8,7 +8,7 @@ import {
   types,
 } from "mobx-state-tree";
 import { Customer } from "./customer";
-import { createCustomer, deleteCustomer, loadData } from "./dataHandler";
+import { createCustomer, deleteCustomer, loadData } from "../utils/dataHandler";
 import { RootModel } from "./root";
 import { useNavigate } from "react-router-dom";
 export const Customers = types

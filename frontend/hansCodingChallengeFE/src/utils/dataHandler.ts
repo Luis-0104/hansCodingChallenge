@@ -1,6 +1,6 @@
 import { SnapshotIn, SnapshotOrInstance, boolean, identifier, number } from "mobx-state-tree/dist/internal";
-import { IRootInstance, useRootStore } from "./root";
-import { Customer } from "./customer";
+import { IRootInstance, useRootStore } from "../models/root";
+import { Customer } from "../models/customer";
 
 export const loadData = (): Promise<SnapshotOrInstance<typeof Customer>[] > => {
   console.log("Fetching data . . .");

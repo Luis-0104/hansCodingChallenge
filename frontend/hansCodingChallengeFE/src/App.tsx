@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
-import { RootContextProvider, useRootStore } from "./models/root";
-import { loadData, saveData } from "./models/dataHandler";
+import {  RootContextProvider, useRootStore } from "./models/root";
+import { loadData, saveData } from "./utils/dataHandler";
 import { Button, ButtonGroup } from "@mui/material";
 import { getSnapshot } from "mobx-state-tree";
 import { AddPerson } from "./pages/AddPerson";
