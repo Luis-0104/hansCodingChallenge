@@ -1,16 +1,16 @@
 import {
   Instance,
   SnapshotIn,
+  SnapshotOrInstance,
   destroy,
   getParent,
   onSnapshot,
   types,
 } from "mobx-state-tree";
-import { Customer, customerT } from "./customer";
+import { Customer } from "./customer";
 import { createCustomer, deleteCustomer, loadData } from "./dataHandler";
 import { RootModel } from "./root";
 import { useNavigate } from "react-router-dom";
-export type customersT = customerT[];
 export const Customers = types
   .model({
     customerList: types.optional(types.array(Customer), []),
@@ -18,7 +18,7 @@ export const Customers = types
     selectionType: types.maybe(types.enumeration(["edit", "delete"])),
   })
   .actions((self) => ({
-    addCustomer(customer: customerT) {
+    addCustomer(customer: SnapshotOrInstance<typeof Customer>) {
       self.customerList.push(customer);
       createCustomer(customer)
         .then((val) => {
@@ -43,7 +43,7 @@ export const Customers = types
           return new Promise(() => {});
         });
     },
-    setCustomers(customers: customersT) {
+    setCustomers(customers: SnapshotOrInstance<typeof Customer>[]) {
       self.customerList.clear();
       self.customerList.push(...customers);
       setTimeout(() => {
@@ -131,7 +131,9 @@ export const Customers = types
       return undefined;
     },
 
-    getCustomerWithUserName(userName: string): customerT | undefined {
+    getCustomerWithUserName(
+      userName: string
+    ): SnapshotOrInstance<typeof Customer> | undefined {
       for (let c of self.customerList) {
         if (c.user_name == userName) {
           return c;

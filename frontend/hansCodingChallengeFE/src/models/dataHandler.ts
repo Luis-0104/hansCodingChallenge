@@ -1,9 +1,8 @@
-import { boolean, identifier, number } from "mobx-state-tree/dist/internal";
-import { customerT } from "./customer";
-import { customersT } from "./customers";
+import { SnapshotIn, SnapshotOrInstance, boolean, identifier, number } from "mobx-state-tree/dist/internal";
 import { IRootInstance, useRootStore } from "./root";
+import { Customer } from "./customer";
 
-export const loadData = (): Promise<customersT> => {
+export const loadData = (): Promise<SnapshotOrInstance<typeof Customer>[] > => {
   console.log("Fetching data . . .");
   return getCustomers().then((val) => {
     console.log("Data arrived!");
@@ -11,11 +10,12 @@ export const loadData = (): Promise<customersT> => {
   });
 };
 
-export const saveData = (data: customersT) => {
+export const saveData = (data: SnapshotOrInstance<typeof Customer>[]) => {
   console.log("Data Saved");
 };
 
-const getCustomers = (): Promise<customersT> => {
+const getCustomers = (): Promise<
+SnapshotOrInstance<typeof Customer>[]> => {
   try {
     return fetch("http://localhost:3000/api/customers")
       .then((res) => {
@@ -47,7 +47,7 @@ const getCustomers = (): Promise<customersT> => {
             el.last_login = new Date(el.last_login);
           }
         );
-        return res as customersT;
+        return res;
       });
   } catch (error) {
     console.error(error);
@@ -55,14 +55,14 @@ const getCustomers = (): Promise<customersT> => {
   }
 };
 
-const getCustomer = (id: number): Promise<customerT> => {
+const getCustomer = (id: number): Promise<SnapshotIn<typeof Customer>> => {
   return fetch(`http://localhost:3000/api/customers/${id}`)
     .then((res) => res.json())
     .then((res) => {
-      return res as customerT;
+      return res as SnapshotIn<typeof Customer>;
     });
 };
-export const createCustomer = (customer: customerT): Promise<boolean> => {
+export const createCustomer = (customer: SnapshotOrInstance<typeof Customer>): Promise<boolean> => {
   return fetch("http://localhost:3000/api/customers", {
     method: "POST",
     body: JSON.stringify(customer),
@@ -80,7 +80,7 @@ export const createCustomer = (customer: customerT): Promise<boolean> => {
     });
 };
 export const updateCustomer = (
-  customer: customerT,
+  customer: SnapshotIn<typeof Customer>,
   oldID?: number
 ): Promise<boolean> => {
   if (!oldID) {

@@ -1,16 +1,6 @@
 import { getParent, types } from "mobx-state-tree";
 import { Customers } from "./customers";
 
-export type customerT = {
-  id: number;
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  birth_date: Date;
-  email: string;
-  password: string;
-  last_login: Date;
-};
 
 export const Customer = types
   .model({

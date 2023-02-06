@@ -1,6 +1,6 @@
 import { Instance, onSnapshot, SnapshotIn, types } from "mobx-state-tree";
 import { createContext, useContext, useState } from "react";
-import { Customers, customersT } from "./customers";
+import { Customers } from "./customers";
 import { Info } from "./info";
 import { InputForm } from "./inputForm";
 
