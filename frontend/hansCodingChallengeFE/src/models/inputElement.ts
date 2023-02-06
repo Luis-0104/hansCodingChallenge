@@ -66,29 +66,79 @@ export const InputElement = types
         }
       }
 
-      //Check if user_name is taken
-      if (self.id == "user_name") {
-        if (
-          getParent<typeof RootModel>(
+      // Only check user_name and customer_number taken, if a user needs to be added.
+      if (
+        getParent<typeof RootModel>(self, 3).customers.selectionType == "edit"
+      ) {
+        // Number/UserName taken on editpage is different, because th id is taken by th current selected User itself
+
+        // In the edit page the passwordfield is allowed to be empty if the password doesn't change
+        if (self.id == "password" && self.value == "") {
+          self.helptext = "";
+          self.valid = true;
+        }
+        //Check if user_name is taken
+        if (self.id == "user_name") {
+          const foundCustomerWithSameUserName = getParent<typeof RootModel>(
             self,
             3
-          ).customers.getCustomerWithUserName(val.toString())
-        ) {
-          self.helptext = `UserName is already taken!`;
-          self.valid = false;
+          ).customers.getCustomerWithUserName(val.toString());
+            console.log(foundCustomerWithSameUserName?.id)
+          if (
+            foundCustomerWithSameUserName &&
+            foundCustomerWithSameUserName.id !=
+              getParent<typeof RootModel>(self, 3).customers.selectedCustomer
+          ) {
+            self.helptext = `UserName is already taken!`;
+            self.valid = false;
+          }
         }
-      }
 
-      //Check if customer_number is taken
-      if (self.id == "customer_number") {
-        console.log(
-          getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(+val)
-        );
-        if (
-          getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(+val)
-        ) {
-          self.helptext = `Customer-Number is already taken!`;
-          self.valid = false;
+        //Check if customer_number is taken
+        if (self.id == "customer_number") {
+          const foundCustomerWithSameID = getParent<typeof RootModel>(
+            self,
+            3
+          ).customers.getCustomerWithID(+val);
+            console.log(foundCustomerWithSameID?.id)
+          if (
+            foundCustomerWithSameID &&
+            foundCustomerWithSameID.id !=
+              getParent<typeof RootModel>(self, 3).customers.selectedCustomer
+          ) {
+            self.helptext = `Customer-Number is already taken!`;
+            self.valid = false;
+          }
+        }
+      } else {
+        //Check if user_name is taken
+        if (self.id == "user_name") {
+          if (
+            getParent<typeof RootModel>(
+              self,
+              3
+            ).customers.getCustomerWithUserName(val.toString())
+          ) {
+            self.helptext = `UserName is already taken!`;
+            self.valid = false;
+          }
+        }
+
+        //Check if customer_number is taken
+        if (self.id == "customer_number") {
+          console.log(
+            getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(
+              +val
+            )
+          );
+          if (
+            getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(
+              +val
+            )
+          ) {
+            self.helptext = `Customer-Number is already taken!`;
+            self.valid = false;
+          }
         }
       }
     },

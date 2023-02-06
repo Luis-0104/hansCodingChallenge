@@ -16,7 +16,7 @@ export const InputForm = types
       { id: "last_name", value: "", valid: undefined, helptext: "" },
       { id: "user_name", value: "", valid: undefined, helptext: "" },
       { id: "email", value: "", valid: undefined, helptext: "" },
-      {id: "birth_date", value: "2000-01-01", valid: true},
+      { id: "birth_date", value: "2000-01-01", valid: true },
       { id: "password", value: "", valid: undefined, helptext: "" },
       { id: "repeat_password", value: "", valid: undefined, helptext: "" },
     ]),
