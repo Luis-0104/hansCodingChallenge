@@ -6,12 +6,15 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Infobox } from "../components/Infobox";
 import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { useLocation } from "react-router-dom";
+import { updateCustomer } from "../models/dataHandler";
+import { Instance } from "mobx-state-tree";
+import { Customer } from "../models/customer";
 
 export const EditPerson = observer(() => {
   const {
     store: {
       customers: { getCustomerWithID, selectedCustomer, selectionType },
-      information: { setLoading },
+      information: { setLoading, setInformation },
       inputForm,
     },
   } = useRootStore();
@@ -34,11 +37,12 @@ export const EditPerson = observer(() => {
       </div>
     );
   }
-  const customerToEdit = getCustomerWithID(+selectedCustomer);
+  const customerToEdit = getCustomerWithID(+selectedCustomer) as Instance<typeof Customer>;
 
   //Fill the mst inputsList with the old values, so user doesn't have to tap though all the fields (as in the addPage)
   const [putValsInInputForm, setPutValsInInputForm] = useState(false);
   if (!putValsInInputForm) {
+    inputForm.updateElement("customer_number", customerToEdit?.id.toString());
     inputForm.updateElement("first_name", customerToEdit?.first_name as string);
     inputForm.updateElement("last_name", customerToEdit?.last_name as string);
     inputForm.updateElement("user_name", customerToEdit?.user_name as string);
@@ -53,7 +57,11 @@ export const EditPerson = observer(() => {
   }
 
   function saveChanges() {
-    customerToEdit?.setId(+inputForm.getElement("customer_number").value);
+    let oldID:number|undefined;
+    if(customerToEdit.id!=+inputForm.getElement("customer_number").value){
+      oldID=customerToEdit.id
+      customerToEdit?.setId(+inputForm.getElement("customer_number").value);
+    }
     customerToEdit?.setFirstName(
       inputForm.getElement("first_name").value.toString()
     );
@@ -69,6 +77,28 @@ export const EditPerson = observer(() => {
         inputForm.getElement("password").value.toString()
       );
     }
+    setLoading(true)
+    window.location.replace("/")
+
+    updateCustomer(customerToEdit,oldID).then((val)=>{
+      setLoading(false)
+      setInformation({
+        title: "Succes!",
+        message: `Updated ${customerToEdit.first_name} ${customerToEdit.last_name}`,
+        type: "success",
+      });
+      return new Promise(() => {});
+    })
+    .catch((err) => {
+      
+      setLoading(false);
+      setInformation({
+        title: "Error!",
+        message: err.toString().slice(6),
+        type: "error",
+      });
+      return new Promise(() => {});
+    });
   }
 
   //Generate random CustomerNumber
@@ -78,15 +108,6 @@ export const EditPerson = observer(() => {
       num = Math.floor(Math.random() * 90000) + 10000;
     } while (getCustomerWithID(num));
     return num;
-  }
-
-  const [numberSet, setnumberSet] = React.useState(false);
-  if (!numberSet) {
-    inputForm.updateElement(
-      "customer_number",
-      generateCustomerNumber().toString()
-    );
-    setnumberSet(true);
   }
 
   // TODO: Css in den Griff bekommen, dass das ganze nach was ausschaut
