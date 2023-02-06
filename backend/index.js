@@ -50,6 +50,10 @@ app.get("/api/customers/:id", (req, res) => {
 
 // create new customer
 app.post("/api/customers", (req, res) => {
+  if(req.params.id<10000||req.params.id>99999){
+    res.status(422).send(`Invalid ID`);
+    console.log(` Sent "Ivalid ID ${req.params.id}" to ${req.hostname} - ${req.ip}`)
+  }
   //TODO: check if ID is taken
   dh.load().then((val) => {
     val = JSON.parse(val);
