@@ -1,9 +1,8 @@
-import { observer } from "mobx-react-lite";
-import React from "react";
-import { useRootStore } from "../models/root";
 import { LinearProgress } from "@material-ui/core";
-import { Alert, AlertTitle, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Alert, IconButton } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import { useRootStore } from "../models/root";
 
 export const Infobox = observer(() => {
   const {

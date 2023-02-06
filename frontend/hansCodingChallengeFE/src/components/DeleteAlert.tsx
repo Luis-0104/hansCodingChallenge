@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Dialog,
@@ -7,8 +6,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useRootStore } from "../models/root";
 import { observer } from "mobx-react-lite";
+import { useRootStore } from "../models/root";
 
 export const DeleteAlert = observer(() => {
   const {

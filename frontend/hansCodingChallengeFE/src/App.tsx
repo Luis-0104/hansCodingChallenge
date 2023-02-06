@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
 import {
-  Routes,
-  Route,
   BrowserRouter,
-  Router,
-  HashRouter,
+  Route,
+  Routes,
 } from "react-router-dom";
 import "./App.css";
-import { Home } from "./pages/Home";
-import {  RootContextProvider, useRootStore } from "./models/root";
-import { loadData, saveData } from "./utils/dataHandler";
-import { Button, ButtonGroup } from "@mui/material";
-import { getSnapshot } from "mobx-state-tree";
+import { RootContextProvider, useRootStore } from "./models/root";
 import { AddPerson } from "./pages/AddPerson";
-import { Infobox } from "./components/Infobox";
-import React from "react";
 import { EditPerson } from "./pages/EditPerson";
+import { Home } from "./pages/Home";
+import { loadData } from "./utils/dataHandler";
 
 function App() {
   const {

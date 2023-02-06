@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from "react";
-import { useRootStore } from "../models/root";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { Button, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { Infobox } from "../components/Infobox";
-import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
-import { useLocation } from "react-router-dom";
-import { updateCustomer } from "../utils/dataHandler";
 import { Instance } from "mobx-state-tree";
+import { useState } from "react";
+import { Infobox } from "../components/Infobox";
 import { Customer } from "../models/customer";
+import { useRootStore } from "../models/root";
+import { updateCustomer } from "../utils/dataHandler";
 
 export const EditPerson = observer(() => {
   const {

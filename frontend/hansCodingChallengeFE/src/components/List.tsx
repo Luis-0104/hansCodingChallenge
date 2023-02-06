@@ -1,35 +1,23 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
-  Button,
-  ButtonGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Icon,
   IconButton,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
-import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
-import { useRootStore } from "../models/root";
-import { getSnapshot } from "mobx-state-tree";
 import {
   DataGrid,
-  GridRowsProp,
   GridColDef,
+  GridRowsProp,
   GridToolbar,
 } from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Customers } from "../models/customers";
+import { observer } from "mobx-react-lite";
+import { useRootStore } from "../models/root";
 import { DeleteAlert } from "./DeleteAlert";
 
 export const List = observer(() => {
   const {
     store: {
       customers: { customerList, selectCustomerToDelete, selectCustomerToEdit },
-      information: { setInformation },
     },
   } = useRootStore();
   const rawsRAW = customerList.map((el) => {

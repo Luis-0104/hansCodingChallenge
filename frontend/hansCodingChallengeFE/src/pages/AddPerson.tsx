@@ -1,10 +1,10 @@
-import React from "react";
-import { useRootStore } from "../models/root";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { Button, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import React from "react";
 import { Infobox } from "../components/Infobox";
-import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
+import { useRootStore } from "../models/root";
 
 export const AddPerson = observer(() => {
   const {
