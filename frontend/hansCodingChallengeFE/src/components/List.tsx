@@ -67,7 +67,12 @@ export const List = observer(() => {
                 color: "blue",
               }}
               size="small"
-              onClick={() => console.log()}
+              // href= "/edit"
+              onClick={() => {
+                selectCustomerToEdit(params.row.id)
+                window.location.replace(`/edit`)
+
+              }}
             >
               <EditIcon />
             </IconButton>

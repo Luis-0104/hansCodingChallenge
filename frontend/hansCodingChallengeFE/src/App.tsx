@@ -15,6 +15,7 @@ import { getSnapshot } from "mobx-state-tree";
 import { AddPerson } from "./pages/AddPerson";
 import { Infobox } from "./components/Infobox";
 import React from "react";
+import { EditPerson } from "./pages/EditPerson";
 
 function App() {
   const {
@@ -48,7 +49,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="addPerson" element={<AddPerson />} />
               <Route path="*" element={<>nothing</>} />
-              <Route path="edit/*" element={<>nothindfdg</>} />
+              <Route path="edit/*" element={<EditPerson/>} />
             </Routes>
           </BrowserRouter>
         </RootContextProvider>

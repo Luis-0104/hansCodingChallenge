@@ -79,7 +79,7 @@ export const AddPerson = observer(() => {
               type="number"
               variant="standard"
               value={inputForm.getElement("customer_number").value}
-              onBlur={(evt) => {
+              onChange={(evt) => {
                 inputForm.updateElement("customer_number", evt.target.value);
               }}
               helperText={inputForm.getElement("customer_number")?.helptext}
@@ -93,6 +93,7 @@ export const AddPerson = observer(() => {
                     "customer_number",
                     generateCustomerNumber().toString()
                   );
+                  
                 }}
                 variant="outlined"
               >
