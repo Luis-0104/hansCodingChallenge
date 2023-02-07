@@ -1,17 +1,26 @@
 describe("Test AddPerson", () => {
+  before(() => {
+    // Delete the user before adding it
+
+    cy.request({
+      method: "DELETE",
+      url: "http://localhost:3000/api/customers/12345",
+      body: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      failOnStatusCode: false,
+    }).then(res=>{
+        if(res.status===404) return;
+    })
+    ;
+  });
+
   beforeEach(() => {
     cy.viewport(1920, 1080);
     cy.visit("/addPerson");
   });
   it("loads page", () => {
     cy.get("#root").should("exist");
-  });
-
-  before(() => {
-    // Delete the user before adding it
-    cy.request("DELETE", "http://localhost:3000/api/customers/12345", {
-      "Content-type": "application/json; charset=UTF-8",
-    });
   });
 
   it("generate new number", () => {
@@ -87,18 +96,16 @@ describe("Test AddPerson", () => {
     cy.get(".MuiAlert-action > .MuiButtonBase-root").click();
     cy.get("#successInfoAlert").should("not.exist");
 
-
     /* ==== Generated with Cypress Studio ==== */
-    cy.get('#\\:r4\\:').clear();
-    cy.get('#\\:r4\\:').type('12345');
-    cy.get('.MuiToolbar-root').should("contain.text","1 of 1")
+    cy.get("#\\:r4\\:").clear();
+    cy.get("#\\:r4\\:").type("12345");
+    cy.get(".MuiToolbar-root").should("contain.text", "1 of 1");
     /* ==== End Cypress Studio ==== */
   });
 
-  after(()=>{
-    cy.visit("/")
-  })
-  
+  after(() => {
+    cy.visit("/");
+  });
 });
 
 function validInput() {
