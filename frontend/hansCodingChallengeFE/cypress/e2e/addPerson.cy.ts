@@ -9,8 +9,6 @@ describe("Test AddPerson", () => {
         "Content-type": "application/json; charset=UTF-8",
       },
       failOnStatusCode: false,
-    }).then(res=>{
-        if(res.status===404) return;
     })
     ;
   });
