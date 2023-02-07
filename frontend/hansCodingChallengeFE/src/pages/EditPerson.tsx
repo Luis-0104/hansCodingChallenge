@@ -267,7 +267,7 @@ export const EditPerson = observer(() => {
             error={inputForm.getElement("repeat_password")?.valid == false}
             id="RepeatPasswordInputField"
           />
-          <Button onClick={saveChanges} disabled={!inputForm.isAllValid()}>
+          <Button onClick={saveChanges} disabled={!inputForm.isAllValid()} id="EditPersonSubmitButton">
             SAVE
           </Button>
         </Stack>
