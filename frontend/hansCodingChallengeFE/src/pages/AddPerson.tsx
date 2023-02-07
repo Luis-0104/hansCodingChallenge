@@ -84,6 +84,7 @@ export const AddPerson = observer(() => {
               }}
               helperText={inputForm.getElement("customer_number")?.helptext}
               error={inputForm.getElement("customer_number")?.valid == false}
+              id="CustomerNumberInputField"
             />
 
             <Tooltip title="Generate random customer number" placement="right">
@@ -96,6 +97,7 @@ export const AddPerson = observer(() => {
                   
                 }}
                 variant="outlined"
+                id="generateCustomerNumberButton"
               >
                 <AutorenewOutlinedIcon />
               </Button>
@@ -110,6 +112,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("first_name")?.helptext}
             error={inputForm.getElement("first_name")?.valid == false}
+            id="FirstNameInputField"
+
           />
           <TextField
             label="Last Name"
@@ -118,7 +122,9 @@ export const AddPerson = observer(() => {
               inputForm.updateElement("last_name", evt.target.value);
             }}
             helperText={inputForm.getElement("last_name")?.helptext}
-            error={inputForm.getElement("last_name")?.valid == false}
+            error={inputForm.getElement("last_name")?.valid == false}           
+             id="LastNameInputField"
+
           />
           <TextField
             label="UserName"
@@ -128,6 +134,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("user_name")?.helptext}
             error={inputForm.getElement("user_name")?.valid == false}
+            id="UserNameInputField"
+
           />
           <TextField
             label="Email-Adress"
@@ -138,6 +146,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("email")?.helptext}
             error={inputForm.getElement("email")?.valid == false}
+            id="EmailInputField"
+
           />
           <TextField
             variant="standard"
@@ -149,6 +159,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("birth_date")?.helptext}
             error={inputForm.getElement("birth_date")?.valid == false}
+            id="BirthdayInputField"
+
           />
           <TextField
             label="Password"
@@ -159,6 +171,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("password")?.helptext}
             error={inputForm.getElement("password")?.valid == false}
+            id="PasswordInputField"
+
           />
           <TextField
             label="Repeat Password"
@@ -169,6 +183,8 @@ export const AddPerson = observer(() => {
             }}
             helperText={inputForm.getElement("repeat_password")?.helptext}
             error={inputForm.getElement("repeat_password")?.valid == false}
+            id="RepeatPasswordInputField"
+
           />
           <Button onClick={addPerson} disabled={!inputForm.isAllValid()}>
             SUMBMIT

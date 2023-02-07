@@ -30,6 +30,7 @@ export const Home = () => {
           style={{
             color: "green",
           }}
+          id="addPersonButton"
         >
           Add Person
         </Button>
@@ -51,6 +52,7 @@ export const Home = () => {
                 setCustomers(val);
               });
             }}
+            id="loadPersonsButton"
           >
             LOAD
           </Button>

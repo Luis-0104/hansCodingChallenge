@@ -36,7 +36,9 @@ export const EditPerson = observer(() => {
       </div>
     );
   }
-  const customerToEdit = getCustomerWithID(+selectedCustomer) as Instance<typeof Customer>;
+  const customerToEdit = getCustomerWithID(+selectedCustomer) as Instance<
+    typeof Customer
+  >;
 
   //Fill the mst inputsList with the old values, so user doesn't have to tap though all the fields (as in the addPage)
   const [putValsInInputForm, setPutValsInInputForm] = useState(false);
@@ -56,9 +58,9 @@ export const EditPerson = observer(() => {
   }
 
   function saveChanges() {
-    let oldID:number|undefined;
-    if(customerToEdit.id!=+inputForm.getElement("customer_number").value){
-      oldID=customerToEdit.id
+    let oldID: number | undefined;
+    if (customerToEdit.id != +inputForm.getElement("customer_number").value) {
+      oldID = customerToEdit.id;
       customerToEdit?.setId(+inputForm.getElement("customer_number").value);
     }
     customerToEdit?.setFirstName(
@@ -76,28 +78,28 @@ export const EditPerson = observer(() => {
         inputForm.getElement("password").value.toString()
       );
     }
-    setLoading(true)
-    window.location.replace("/")
+    setLoading(true);
+    window.location.replace("/");
 
-    updateCustomer(customerToEdit,oldID).then((val)=>{
-      setLoading(false)
-      setInformation({
-        title: "Succes!",
-        message: `Updated ${customerToEdit.first_name} ${customerToEdit.last_name}`,
-        type: "success",
+    updateCustomer(customerToEdit, oldID)
+      .then((val) => {
+        setLoading(false);
+        setInformation({
+          title: "Succes!",
+          message: `Updated ${customerToEdit.first_name} ${customerToEdit.last_name}`,
+          type: "success",
+        });
+        return new Promise(() => {});
+      })
+      .catch((err) => {
+        setLoading(false);
+        setInformation({
+          title: "Error!",
+          message: err.toString().slice(6),
+          type: "error",
+        });
+        return new Promise(() => {});
       });
-      return new Promise(() => {});
-    })
-    .catch((err) => {
-      
-      setLoading(false);
-      setInformation({
-        title: "Error!",
-        message: err.toString().slice(6),
-        type: "error",
-      });
-      return new Promise(() => {});
-    });
   }
 
   //Generate random CustomerNumber
@@ -149,6 +151,7 @@ export const EditPerson = observer(() => {
               }}
               helperText={inputForm.getElement("customer_number")?.helptext}
               error={inputForm.getElement("customer_number")?.valid == false}
+              id="CustomerNumberInputField"
             />
 
             <Tooltip title="Generate random customer number" placement="right">
@@ -160,6 +163,7 @@ export const EditPerson = observer(() => {
                   );
                 }}
                 variant="outlined"
+                id="generateCustomerNumberButton"
               >
                 <AutorenewOutlinedIcon />
               </Button>
@@ -175,6 +179,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("first_name")?.helptext}
             error={inputForm.getElement("first_name")?.valid == false}
+            id="FirstNameInputField"
           />
           <TextField
             label="Last Name"
@@ -185,6 +190,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("last_name")?.helptext}
             error={inputForm.getElement("last_name")?.valid == false}
+            id="LastNameInputField"
           />
           <TextField
             label="UserName"
@@ -195,6 +201,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("user_name")?.helptext}
             error={inputForm.getElement("user_name")?.valid == false}
+            id="UserNameInputField"
           />
           <TextField
             label="Email-Adress"
@@ -206,6 +213,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("email")?.helptext}
             error={inputForm.getElement("email")?.valid == false}
+            id="EmailInputField"
           />
           <TextField
             variant="standard"
@@ -219,6 +227,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("birth_date")?.helptext}
             error={inputForm.getElement("birth_date")?.valid == false}
+            id="BirthdayInputField"
           />
           <TextField
             disabled
@@ -234,6 +243,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("birth_date")?.helptext}
             error={inputForm.getElement("birth_date")?.valid == false}
+            id="LastLoginDisplayField"
           />
           <TextField
             label="Password"
@@ -244,6 +254,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("password")?.helptext}
             error={inputForm.getElement("password")?.valid == false}
+            id="PasswordInputField"
           />
           <TextField
             label="Repeat Password"
@@ -254,6 +265,7 @@ export const EditPerson = observer(() => {
             }}
             helperText={inputForm.getElement("repeat_password")?.helptext}
             error={inputForm.getElement("repeat_password")?.valid == false}
+            id="RepeatPasswordInputField"
           />
           <Button onClick={saveChanges} disabled={!inputForm.isAllValid()}>
             SAVE
