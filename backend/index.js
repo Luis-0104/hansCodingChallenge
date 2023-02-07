@@ -50,33 +50,28 @@ app.get("/api/customers/:id", (req, res) => {
 
 // create new customer
 app.post("/api/customers", (req, res) => {
-  if (req.params.id < 10000 || req.params.id > 99999) {
-    res.status(422).send(`Invalid ID`);
-    console.log(
-      ` Sent "Ivalid ID ${req.params.id}" to ${req.hostname} - ${req.ip}`
-    );
-  }
-  //TODO: check if ID is taken
-  customer = val.find((el) => {
-    return el.id == req.params.id || el.user_name == req.params.user_name;
-  });
-
-  if (customer) {
-    res.status(409).send(`ID: ${req.params.id} is already taken.`);
-    console.log(
-      `Sent "409 ID ${req.params.id} already taken" to ${req.hostname} - ${req.ip}`
-    );
-  }
-
   dh.load().then((val) => {
     val = JSON.parse(val);
-    val.push(req.body);
-    dh.save(val);
-    console.log(
-      `Posted new customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
-    );
-    console.log(req.body);
-    res.send(req.body);
+    // check if ID or username is taken
+    
+    customer = val.find((el) => {
+      return el.id == req.body.id || el.user_name == req.body.user_name;
+    });
+    console.log(customer)
+    if (customer) {
+      res.status(409).send(`ID: ${req.body.id} or user_name: ${req.body.user_name} is already taken.`);
+      console.log(
+        `Sent "409 ID: ${req.body.id} or user_name: ${req.body.user_name} already taken" to ${req.hostname} - ${req.ip}`
+      );
+    } else {
+      val.push(req.body);
+      dh.save(val);
+      console.log(
+        `Posted new customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
+      );
+      console.log(req.body);
+      res.send(req.body);
+    }
   });
 });
 
