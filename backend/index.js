@@ -50,11 +50,24 @@ app.get("/api/customers/:id", (req, res) => {
 
 // create new customer
 app.post("/api/customers", (req, res) => {
-  if(req.params.id<10000||req.params.id>99999){
+  if (req.params.id < 10000 || req.params.id > 99999) {
     res.status(422).send(`Invalid ID`);
-    console.log(` Sent "Ivalid ID ${req.params.id}" to ${req.hostname} - ${req.ip}`)
+    console.log(
+      ` Sent "Ivalid ID ${req.params.id}" to ${req.hostname} - ${req.ip}`
+    );
   }
   //TODO: check if ID is taken
+  customer = val.find((el) => {
+    return el.id == req.params.id || el.user_name == req.params.user_name;
+  });
+
+  if (customer) {
+    res.status(409).send(`ID: ${req.params.id} is already taken.`);
+    console.log(
+      `Sent "409 ID ${req.params.id} already taken" to ${req.hostname} - ${req.ip}`
+    );
+  }
+
   dh.load().then((val) => {
     val = JSON.parse(val);
     val.push(req.body);
@@ -69,8 +82,6 @@ app.post("/api/customers", (req, res) => {
 
 // update customer
 app.put("/api/customers/:id", (req, res) => {
-  
-
   dh.load().then((val) => {
     val = JSON.parse(val);
     customer = val.find((el) => {
@@ -100,35 +111,34 @@ app.put("/api/customers/:id", (req, res) => {
 
 // delete customer
 app.delete("/api/customers/:id", (req, res) => {
-  setTimeout(()=>{
-     dh.load().then((val) => {
-    val = JSON.parse(val);
-    customer = val.find((el) => {
-      return el.id == req.params.id;
-    });
-    if (customer) {
-      val.splice(
-        val.findIndex((el) => {
-          return el === customer;
-        }),
-        1
-      );
+  setTimeout(() => {
+    dh.load().then((val) => {
+      val = JSON.parse(val);
+      customer = val.find((el) => {
+        return el.id == req.params.id;
+      });
+      if (customer) {
+        val.splice(
+          val.findIndex((el) => {
+            return el === customer;
+          }),
+          1
+        );
 
-      dh.save(val);
-      res.header("");
-      res.send(`The Customer with ID: ${customer.id} was deleted`);
-      console.log(
-        `Deleted customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
-      );
-    } else {
-      res.status(404).send(`Customer with id: ${req.params.id} not found`);
-      console.log(
-        `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
-      );
-    }
-  });
-  }, 1000)
- 
+        dh.save(val);
+        res.header("");
+        res.send(`The Customer with ID: ${customer.id} was deleted`);
+        console.log(
+          `Deleted customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
+        );
+      } else {
+        res.status(404).send(`Customer with id: ${req.params.id} not found`);
+        console.log(
+          `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
+        );
+      }
+    });
+  }, 1000);
 });
 // 404 response
 app.use((req, res, next) => {
