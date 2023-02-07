@@ -94,11 +94,9 @@ describe("Test AddPerson", () => {
     cy.get(".MuiAlert-action > .MuiButtonBase-root").click();
     cy.get("#successInfoAlert").should("not.exist");
 
-    /* ==== Generated with Cypress Studio ==== */
     cy.get("#\\:r4\\:").clear();
     cy.get("#\\:r4\\:").type("12345");
     cy.get(".MuiToolbar-root").should("contain.text", "1 of 1");
-    /* ==== End Cypress Studio ==== */
   });
 
   after(() => {

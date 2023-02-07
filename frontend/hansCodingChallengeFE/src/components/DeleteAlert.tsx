@@ -30,6 +30,7 @@ export const DeleteAlert = observer(() => {
         onClose={resetSelection}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        id="DeleteAlertDialog"
       >
         <DialogTitle id="alert-dialog-title">
           {`Delete ${getCustomerWithID(selectedCustomer as number)?.first_name} ${getCustomerWithID(selectedCustomer as number)?.last_name}`}

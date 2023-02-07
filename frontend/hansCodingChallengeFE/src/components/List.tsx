@@ -55,12 +55,11 @@ export const List = observer(() => {
                 color: "blue",
               }}
               size="small"
-              // href= "/edit"
               onClick={() => {
                 selectCustomerToEdit(params.row.id)
                 window.location.replace(`/edit`)
-
               }}
+              id = {`Edit${params.row.id}Button`}
             >
               <EditIcon />
             </IconButton>
@@ -74,6 +73,7 @@ export const List = observer(() => {
               onClick={() => {
                 selectCustomerToDelete(params.row.id);
               }}
+              id = {`Delete${params.row.id}Button`}
             >
               <DeleteIcon />
             </IconButton>
