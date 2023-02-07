@@ -26,7 +26,11 @@ export const Infobox = observer(() => {
   } else if (information.type == "error") {
     infoAlert = (
       <>
-        <Alert severity="error" action={alertAction}>
+        <Alert
+          severity="error"
+          action={alertAction}
+          id={`${information.type}InfoAlert`}
+        >
           <strong>{information.title}</strong> {information.message}
         </Alert>
       </>
@@ -34,7 +38,11 @@ export const Infobox = observer(() => {
   } else if (information.type == "warning") {
     infoAlert = (
       <>
-        <Alert severity="warning" action={alertAction}>
+        <Alert
+          severity="warning"
+          action={alertAction}
+          id={`${information.type}InfoAlert`}
+        >
           <strong>{information.title}</strong> {information.message}
         </Alert>
       </>
@@ -42,7 +50,11 @@ export const Infobox = observer(() => {
   } else if (information.type == "info") {
     infoAlert = (
       <>
-        <Alert severity="info" action={alertAction}>
+        <Alert
+          severity="info"
+          action={alertAction}
+          id={`${information.type}InfoAlert`}
+        >
           <strong>{information.title}</strong> {information.message}
         </Alert>
       </>
@@ -50,7 +62,11 @@ export const Infobox = observer(() => {
   } else if (information.type == "success") {
     infoAlert = (
       <>
-        <Alert severity="success" action={alertAction}>
+        <Alert
+          severity="success"
+          action={alertAction}
+          id={`${information.type}InfoAlert`}
+        >
           <strong>{information.title}</strong> {information.message}
         </Alert>
       </>
@@ -60,7 +76,7 @@ export const Infobox = observer(() => {
     return (
       <>
         {infoAlert}
-        <LinearProgress />
+        <LinearProgress id="linearProgress" />
       </>
     );
   } else {

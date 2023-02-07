@@ -186,7 +186,7 @@ export const AddPerson = observer(() => {
             id="RepeatPasswordInputField"
 
           />
-          <Button onClick={addPerson} disabled={!inputForm.isAllValid()}>
+          <Button onClick={addPerson} disabled={!inputForm.isAllValid()} id="AddPersonSubmitButttton">
             SUMBMIT
           </Button>
         </Stack>
