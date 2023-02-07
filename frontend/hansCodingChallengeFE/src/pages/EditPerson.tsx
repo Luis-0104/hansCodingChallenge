@@ -79,7 +79,6 @@ export const EditPerson = observer(() => {
       );
     }
     setLoading(true);
-    window.location.replace("/");
 
     updateCustomer(customerToEdit, oldID)
       .then((val) => {
@@ -89,6 +88,7 @@ export const EditPerson = observer(() => {
           message: `Updated ${customerToEdit.first_name} ${customerToEdit.last_name}`,
           type: "success",
         });
+        window.location.replace("/");
         return new Promise(() => {});
       })
       .catch((err) => {
@@ -98,6 +98,7 @@ export const EditPerson = observer(() => {
           message: err.toString().slice(6),
           type: "error",
         });
+        window.location.replace("/");
         return new Promise(() => {});
       });
   }
@@ -267,7 +268,11 @@ export const EditPerson = observer(() => {
             error={inputForm.getElement("repeat_password")?.valid == false}
             id="RepeatPasswordInputField"
           />
-          <Button onClick={saveChanges} disabled={!inputForm.isAllValid()} id="EditPersonSubmitButton">
+          <Button
+            onClick={saveChanges}
+            disabled={!inputForm.isAllValid()}
+            id="EditPersonSubmitButton"
+          >
             SAVE
           </Button>
         </Stack>

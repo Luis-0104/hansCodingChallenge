@@ -10,9 +10,7 @@ export const loadData = (): Promise<SnapshotOrInstance<typeof Customer>[] > => {
   });
 };
 
-export const saveData = (data: SnapshotOrInstance<typeof Customer>[]) => {
-  console.log("Data Saved");
-};
+
 
 const getCustomers = (): Promise<
 SnapshotOrInstance<typeof Customer>[]> => {
@@ -95,7 +93,6 @@ export const updateCustomer = (
     },
   })
     .catch((err) => {
-      console.log("errrr")
       throw new Error(`${err}`);
     })
     .then((val) => {

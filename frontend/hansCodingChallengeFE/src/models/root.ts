@@ -21,13 +21,11 @@ if (sessionStorage.getItem("customers")) {
   cookieCustomers = JSON.parse(sessionStorage.getItem("customers") as string);
 }
 
-
 let initialState = RootModel.create({
   customers: Customers.create(cookieCustomers),
   information: Info.create(cookieInfo),
   inputForm: InputForm.create({}),
 });
-console.log("rootstore")
 const rootStoreInstance = initialState;
 
 onSnapshot(rootStoreInstance, (snapshot) => {

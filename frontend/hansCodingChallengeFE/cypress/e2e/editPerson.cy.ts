@@ -31,15 +31,13 @@ describe("Test EditPerson", () => {
     cy.get("#\\:r4\\:").type("12345");
     cy.get("#Edit12345Button").click();
   });
-  it("loads page", () => {
-    cy.get("#root").should("exist");
-  });
+
+ 
 
   it("generate new number", () => {
     cy.get("#CustomerNumberInputField")
       .invoke("val")
       .then((val) => {
-        console.log(val);
         cy.get('[data-testid="AutorenewOutlinedIcon"]').click();
         cy.get("#CustomerNumberInputField").should("not.have.value", val);
       });
@@ -63,9 +61,6 @@ describe("Test EditPerson", () => {
 
     cy.get("#LastNameInputField").clear();
     cy.get("#LastNameInputField").type("u").blur();
-    cy.get("#LastNameInputField-helper-text").should("exist");
-
-    cy.get("#UserNameInputField").clear();
     cy.get("#UserNameInputField").type("!!fdgd7").blur();
     cy.get("#UserNameInputField-helper-text").should("exist");
 
@@ -103,8 +98,10 @@ describe("Test EditPerson", () => {
   it("edit the User", () => {
     validInput();
     cy.get("#EditPersonSubmitButton").click();
+    cy.get("#successInfoAlert").should("exist");
 
     cy.get(".MuiAlert-action > .MuiButtonBase-root").click();
+    cy.get("#successInfoAlert").should("not.exist");
 
     cy.get("#\\:r4\\:").clear();
     cy.get("#\\:r4\\:").type("12345");

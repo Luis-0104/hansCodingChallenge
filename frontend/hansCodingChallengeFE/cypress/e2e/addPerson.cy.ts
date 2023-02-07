@@ -25,7 +25,6 @@ describe("Test AddPerson", () => {
     cy.get("#CustomerNumberInputField")
       .invoke("val")
       .then((val) => {
-        console.log(val);
         cy.get('[data-testid="AutorenewOutlinedIcon"]').click();
         cy.get("#CustomerNumberInputField").should("not.have.value", val);
       });
@@ -87,7 +86,7 @@ describe("Test AddPerson", () => {
   });
 
   it("add new User", () => {
-    validInput();
+    validInput1();
     cy.get("#AddPersonSubmitButttton").click();
     cy.get("#successInfoAlert").should("exist");
 
@@ -104,7 +103,7 @@ describe("Test AddPerson", () => {
   });
 });
 
-function validInput() {
+function validInput1() {
   cy.get("#CustomerNumberInputField").clear();
   cy.get("#CustomerNumberInputField").type("12345");
   cy.get("#FirstNameInputField").clear();

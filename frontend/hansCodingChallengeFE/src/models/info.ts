@@ -20,7 +20,6 @@ export const Info = types
     },
     setInformation: flow(function* ({ title, message, type }: infoType) {
       (self.title = title), (self.message = message), (self.type = type);
-      console.log(`new Info: ${self.message}`)
       yield new Promise((res) => setTimeout(res, 10000));
 
       self.title = "";
@@ -34,7 +33,6 @@ export const Info = types
   .actions((self) => ({
     afterCreate() {
       // After the page changes, we call the setInfo again, so it
-
       self.setInformation({
         title: self.title,
         message: self.message,

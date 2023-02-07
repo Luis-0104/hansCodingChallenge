@@ -83,7 +83,6 @@ export const InputElement = types
             self,
             3
           ).customers.getCustomerWithUserName(val.toString());
-            console.log(foundCustomerWithSameUserName?.id)
           if (
             foundCustomerWithSameUserName &&
             foundCustomerWithSameUserName.id !=
@@ -100,7 +99,6 @@ export const InputElement = types
             self,
             3
           ).customers.getCustomerWithID(+val);
-            console.log(foundCustomerWithSameID?.id)
           if (
             foundCustomerWithSameID &&
             foundCustomerWithSameID.id !=
@@ -126,11 +124,6 @@ export const InputElement = types
 
         //Check if customer_number is taken
         if (self.id == "customer_number") {
-          console.log(
-            getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(
-              +val
-            )
-          );
           if (
             getParent<typeof RootModel>(self, 3).customers.getCustomerWithID(
               +val
