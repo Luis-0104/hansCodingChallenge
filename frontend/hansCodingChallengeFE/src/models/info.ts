@@ -1,4 +1,4 @@
-import { flow, getParent, types } from "mobx-state-tree";
+import { flow, getParent, getSnapshot, types } from "mobx-state-tree";
 import { Customers } from "./customers";
 export type infoType = {
   title: string;
@@ -20,6 +20,7 @@ export const Info = types
     },
     setInformation: flow(function* ({ title, message, type }: infoType) {
       (self.title = title), (self.message = message), (self.type = type);
+      console.log(`new Info: ${self.message}`)
       yield new Promise((res) => setTimeout(res, 10000));
 
       self.title = "";

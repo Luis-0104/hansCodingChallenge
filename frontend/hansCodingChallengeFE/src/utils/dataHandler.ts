@@ -95,6 +95,7 @@ export const updateCustomer = (
     },
   })
     .catch((err) => {
+      console.log("errrr")
       throw new Error(`${err}`);
     })
     .then((val) => {

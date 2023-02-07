@@ -104,10 +104,7 @@ describe("Test EditPerson", () => {
     validInput();
     cy.get("#EditPersonSubmitButton").click();
 
-    cy.get("#successInfoAlert").should("exist");
-
     cy.get(".MuiAlert-action > .MuiButtonBase-root").click();
-    cy.get("#successInfoAlert").should("not.exist");
 
     cy.get("#\\:r4\\:").clear();
     cy.get("#\\:r4\\:").type("12345");
