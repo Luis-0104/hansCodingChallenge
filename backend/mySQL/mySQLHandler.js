@@ -14,7 +14,7 @@ con.connect(function (err) {
 });
 
 export function getAllCustomers(callback) {
-  con.query("SELECT * from MOCK_DATA", (err, result, fields) => {
+  con.query("SELECT * from customers", (err, result, fields) => {
     if (err) {
       console.error(`Error: ${err.message}`);
     }
@@ -24,7 +24,7 @@ export function getAllCustomers(callback) {
 
 export function getCustomerWithID(id, callback) {
   con.query(
-    "SELECT * from MOCK_DATA WHERE id = ?",
+    "SELECT * from customers WHERE id = ?",
     [id],
     (err, result, fields) => {
       if (err) {
@@ -38,7 +38,7 @@ export function getCustomerWithID(id, callback) {
 export function createNewCustomer(customer, callback) {
   encryptWithCustomer(customer).then((customer)=>{
      con.query(
-    `insert into MOCK_DATA (
+    `insert into customers (
 		id,
 		user_name,
 		first_name,
@@ -71,7 +71,7 @@ values (?,?,?,?,?,?,?,?);`,
 }
 
 export function deleteCustomerWithID(id, callback) {
-  con.query(`DELETE FROM MOCK_DATA WHERE id = ?;`, [id], (err, result) => {
+  con.query(`DELETE FROM customers WHERE id = ?;`, [id], (err, result) => {
     if (err) {
       console.error(`Error: ${err.message}`);
     }
@@ -82,7 +82,7 @@ export function deleteCustomerWithID(id, callback) {
 export function updateCustomer(id, customer, callback) {
   encryptWithCustomer(customer).then((customer)=>{
   con.query(
-    `UPDATE MOCK_DATA SET
+    `UPDATE customers SET
             id = ?,
             user_name = ?, 
             first_name = ?,
