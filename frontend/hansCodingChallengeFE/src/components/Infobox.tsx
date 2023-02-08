@@ -1,6 +1,5 @@
-import { LinearProgress } from "@material-ui/core";
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, IconButton } from "@mui/material";
+import { Alert, IconButton, LinearProgress } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useRootStore } from "../models/root";
 

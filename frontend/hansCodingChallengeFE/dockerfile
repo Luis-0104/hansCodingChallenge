@@ -1,0 +1,8 @@
+FROM node
+WORKDIR /app
+COPY package.json .
+RUN npm install
+RUN npm install @mui/material @emotion/react @emotion/styled @mui/icons-material mobx-react-lite @mui/x-data-grid 
+COPY . .
+CMD ["npm","run","dev"]
+EXPOSE 5173
