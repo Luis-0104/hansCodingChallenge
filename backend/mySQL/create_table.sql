@@ -27,14 +27,14 @@ insert into MOCK_DATA (
 		last_login
 	)
 values (
-		17432,
-		'ecolcutt0!',
+		17442,
+		'ecolcutt0',
 		'Erick',
 		'Colcutt',
 		'2022-6-27',
 		'ecolcutt0@upenn.edu',
 		'hHW2gYBRKZlz',
-		'2022-6-27'
+		'2022-6-27 10:19:49'
 	);
 
 select * from MOCK_DATA;
