@@ -8,10 +8,10 @@ describe("Test DeletePerson", () => {
         user_name: "BrotBernd123",
         first_name: "Bernd",
         last_name: "DasBrot",
-        birth_date: "2003-08-01T00:00:00.000Z",
+        birth_date: "2003-08-01 00:00:00",
         email: "Bernd@brot.de",
         password: "IchMag2Brot!",
-        last_login: "2023-02-07T09:59:06.564Z",
+        last_login: "2023-02-07 09:59:06",
       },
       failOnStatusCode: false,
     });
