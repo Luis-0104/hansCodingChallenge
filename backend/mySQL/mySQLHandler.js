@@ -1,4 +1,5 @@
-var mysql = require("mysql2");
+import mysql from "mysql2";
+import { encryptWithCustomer } from "./passwordManager.js";
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -12,7 +13,7 @@ con.connect(function (err) {
   console.log("Connected to DataBase!");
 });
 
-function getAllCustomers(callback) {
+export function getAllCustomers(callback) {
   con.query("SELECT * from MOCK_DATA", (err, result, fields) => {
     if (err) {
       console.error(`Error: ${err.message}`);
@@ -21,7 +22,7 @@ function getAllCustomers(callback) {
   });
 }
 
-function getCustomerWithID(id, callback) {
+export function getCustomerWithID(id, callback) {
   con.query(
     "SELECT * from MOCK_DATA WHERE id = ?",
     [id],
@@ -34,8 +35,9 @@ function getCustomerWithID(id, callback) {
   );
 }
 
-function createNewCustomer(customer, callback) {
-  con.query(
+export function createNewCustomer(customer, callback) {
+  encryptWithCustomer(customer).then((customer)=>{
+     con.query(
     `insert into MOCK_DATA (
 		id,
 		user_name,
@@ -64,9 +66,11 @@ values (?,?,?,?,?,?,?,?);`,
       callback(err, result);
     }
   );
+  })
+ 
 }
 
-function deleteCustomerWithID(id, callback) {
+export function deleteCustomerWithID(id, callback) {
   con.query(`DELETE FROM MOCK_DATA WHERE id = ?;`, [id], (err, result) => {
     if (err) {
       console.error(`Error: ${err.message}`);
@@ -75,7 +79,8 @@ function deleteCustomerWithID(id, callback) {
   });
 }
 
-function updateCustomer(id, customer, callback) {
+export function updateCustomer(id, customer, callback) {
+  encryptWithCustomer(customer).then((customer)=>{
   con.query(
     `UPDATE MOCK_DATA SET
             id = ?,
@@ -109,10 +114,6 @@ function updateCustomer(id, customer, callback) {
       );
     }
   );
+  })
 }
 
-exports.getAllCustomers = getAllCustomers;
-exports.getCustomerWithID = getCustomerWithID;
-exports.createNewCustomer = createNewCustomer;
-exports.updateCustomer = updateCustomer;
-exports.deleteCustomerWithID = deleteCustomerWithID;

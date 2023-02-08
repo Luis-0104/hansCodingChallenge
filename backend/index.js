@@ -1,11 +1,11 @@
-const express = require("express");
-var bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-let DB = require("./mySQL/mySQLHandler");
+import {getCustomerWithID,getAllCustomers,createNewCustomer,deleteCustomerWithID,updateCustomer} from "./mySQL/mySQLHandler.js"
 
 // nothing in root direcory
 app.get("/", (req, res) => {
@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 
 // get all customers
 app.get("/api/customers", (req, res) => {
-  DB.getAllCustomers((err, val) => {
+  getAllCustomers((err, val) => {
     if (err) {
     } else {
       res.send(val);
@@ -26,7 +26,7 @@ app.get("/api/customers", (req, res) => {
 
 // get one customer with id
 app.get("/api/customers/:id", (req, res) => {
-  DB.getCustomerWithID(req.params.id, (err, val) => {
+  getCustomerWithID(req.params.id, (err, val) => {
     if (err) {
     } else {
       if (val) {
@@ -46,7 +46,7 @@ app.get("/api/customers/:id", (req, res) => {
 
 // create new customer
 app.post("/api/customers", (req, res) => {
-  DB.createNewCustomer(req.body, (err, val) => {
+  createNewCustomer(req.body, (err, val) => {
     if (err) {
       res.status(409).send(`${err}`);
       console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
@@ -62,7 +62,7 @@ app.post("/api/customers", (req, res) => {
 
 // update customer
 app.put("/api/customers/:id", (req, res) => {
-  DB.updateCustomer(req.params.id, req.body, (err, val) => {
+  updateCustomer(req.params.id, req.body, (err, val) => {
     if (err) {
       console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
       res.status(500).send(val);
@@ -86,7 +86,7 @@ app.put("/api/customers/:id", (req, res) => {
 
 // delete customer
 app.delete("/api/customers/:id", (req, res) => {
-  DB.deleteCustomerWithID(req.params.id, (err, val) => {
+  deleteCustomerWithID(req.params.id, (err, val) => {
     if (err) {
       res.status(500).send(err);
       console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
