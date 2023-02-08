@@ -70,7 +70,11 @@ export const createCustomer = (customer: SnapshotOrInstance<typeof Customer>): P
   })
     .then((val) => {
       console.log(`Created Customer with ID ${customer.id}`);
-
+      if (!val.ok) {
+        throw new Error(
+          `Creating ${customer.first_name} ${customer.last_name} failed (${val.statusText} - ${val.status})`
+        );
+      }
       return val.ok;
     })
     .catch((err) => {
