@@ -5,7 +5,6 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-let dh = require("./data/datahandler");
 let DB = require("./mySQL/mySQLHandler");
 
 // nothing in root direcory
