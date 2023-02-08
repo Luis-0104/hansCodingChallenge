@@ -86,7 +86,7 @@ describe("Test AddPerson", () => {
   });
 
   it("add new User", () => {
-    validInput1();
+    validInput();
     cy.get("#AddPersonSubmitButttton").click();
     cy.get("#successInfoAlert").should("exist");
 
@@ -96,6 +96,7 @@ describe("Test AddPerson", () => {
     cy.get("#\\:r4\\:").clear();
     cy.get("#\\:r4\\:").type("12345");
     cy.get(".MuiToolbar-root").should("contain.text", "1 of 1");
+    
   });
 
   after(() => {
@@ -103,7 +104,8 @@ describe("Test AddPerson", () => {
   });
 });
 
-function validInput1() {
+
+export function validInput() {
   cy.get("#CustomerNumberInputField").clear();
   cy.get("#CustomerNumberInputField").type("12345");
   cy.get("#FirstNameInputField").clear();
