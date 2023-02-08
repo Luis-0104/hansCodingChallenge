@@ -6,6 +6,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 let dh = require("./data/datahandler");
+let DB = require("./mySQL/mySQLHandler");
 
 // nothing in root direcory
 app.get("/", (req, res) => {
@@ -15,57 +16,42 @@ app.get("/", (req, res) => {
 
 // get all customers
 app.get("/api/customers", (req, res) => {
-  dh.load().then((val) => {
-    // setTimeout(()=>{
-
-    //   res.send(JSON.parse(val));
-    // }, 2500)
-    res.send(JSON.parse(val));
-
-    console.log(`Sent "Customers" to ${req.hostname} - ${req.ip}`);
+  DB.getAllCustomers((err, val) => {
+    if (err) {
+    } else {
+      res.send(val);
+      console.log(`Sent "Customers" to ${req.hostname} - ${req.ip}`);
+    }
   });
 });
 
 // get one customer with id
 app.get("/api/customers/:id", (req, res) => {
-  dh.load().then((val) => {
-    val = JSON.parse(val);
-    customer = val.find((el) => {
-      return el.id == req.params.id;
-    });
-
-    if (customer) {
-      res.send(customer);
-      console.log(
-        `Sent "Customer with ID ${req.params.id}" to ${req.hostname} - ${req.ip}`
-      );
+  DB.getCustomerWithID(req.params.id, (err, val) => {
+    if (err) {
     } else {
-      res.status(404).send(`Customer with id: ${req.params.id} not found`);
-      console.log(
-        `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
-      );
+      if (val) {
+        res.send(val);
+        console.log(
+          `Sent "Customer with ID ${req.params.id}" to ${req.hostname} - ${req.ip}`
+        );
+      } else {
+        res.status(404).send(`Customer with id: ${req.params.id} not found`);
+        console.log(
+          `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
+        );
+      }
     }
   });
 });
 
 // create new customer
 app.post("/api/customers", (req, res) => {
-  dh.load().then((val) => {
-    val = JSON.parse(val);
-    // check if ID or username is taken
-    
-    customer = val.find((el) => {
-      return el.id == req.body.id || el.user_name == req.body.user_name;
-    });
-    console.log(customer)
-    if (customer) {
-      res.status(409).send(`ID: ${req.body.id} or user_name: ${req.body.user_name} is already taken.`);
-      console.log(
-        `Sent "409 ID: ${req.body.id} or user_name: ${req.body.user_name} already taken" to ${req.hostname} - ${req.ip}`
-      );
+  DB.createNewCustomer(req.body, (err, val) => {
+    if (err) {
+      res.status(409).send(`${err}`);
+      console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
     } else {
-      val.push(req.body);
-      dh.save(val);
       console.log(
         `Posted new customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
       );
@@ -77,52 +63,38 @@ app.post("/api/customers", (req, res) => {
 
 // update customer
 app.put("/api/customers/:id", (req, res) => {
-  dh.load().then((val) => {
-    val = JSON.parse(val);
-    customer = val.find((el) => {
-      return el.id == req.params.id;
-    });
-
-    if (customer) {
-      val[
-        val.findIndex((el) => {
-          return el === customer;
-        })
-      ] = req.body;
-      dh.save(val);
-      console.log(
-        `Put new data to customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
-      );
-      console.log(req.body);
-      res.send(req.body);
+  DB.updateCustomer(req.params.id, req.body, (err, val) => {
+    if (err) {
+      console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
+      res.status(500).send(val);
     } else {
-      res.status(404).send(`Customer with id: ${req.params.id} not found`);
-      console.log(
-        `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
-      );
+      if (val) {
+        console.log(
+          `Put new data to customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
+        );
+        console.log(req.body);
+        res.send(req.body);
+      } else {
+        res.status(404).send(`Customer with id: ${req.params.id} not found`);
+        console.log(
+          `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
+        );
+      }
     }
   });
+
 });
 
 // delete customer
 app.delete("/api/customers/:id", (req, res) => {
-  setTimeout(() => {
-    dh.load().then((val) => {
-      val = JSON.parse(val);
-      customer = val.find((el) => {
-        return el.id == req.params.id;
-      });
-      if (customer) {
-        val.splice(
-          val.findIndex((el) => {
-            return el === customer;
-          }),
-          1
-        );
-
-        dh.save(val);
+  DB.deleteCustomerWithID(req.params.id, (err, val) => {
+    if (err) {
+      res.status(500).send(err);
+      console.log(`Sent "${err}" to ${req.hostname} - ${req.ip}`);
+    } else {
+      if (val) {
         res.header("");
-        res.send(`The Customer with ID: ${customer.id} was deleted`);
+        res.send(`The Customer with ID: ${req.params.id} was deleted`);
         console.log(
           `Deleted customer with ID ${req.params.id} by ${req.hostname} - ${req.ip}`
         );
@@ -132,8 +104,9 @@ app.delete("/api/customers/:id", (req, res) => {
           `Sent "404 Customer with ID ${req.params.id} not found" to ${req.hostname} - ${req.ip}`
         );
       }
-    });
-  }, 1000);
+    }
+  });
+
 });
 // 404 response
 app.use((req, res, next) => {

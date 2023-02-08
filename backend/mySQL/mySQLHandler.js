@@ -9,27 +9,31 @@ var con = mysql.createConnection({
 
 con.connect(function (err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected to DataBase!");
 });
 
-export function getAllCustomers(callback) {
+function getAllCustomers(callback) {
   con.query("SELECT * from MOCK_DATA", (err, result, fields) => {
-    if (err) throw err;
-    callback(result);
+    if (err) {
+        console.error(`Error: ${err.message}`);
+      }
+      callback(err,result)
   });
 }
 
-export function getCustomerWithID(id, callback) {
+function getCustomerWithID(id, callback) {
   con.query(
     `SELECT * from MOCK_DATA WHERE id = ${id}`,
     (err, result, fields) => {
-      if (err) throw err;
-      callback(result[0]);
+        if (err) {
+            console.error(`Error: ${err.message}`);
+          }
+          callback(err,result[0])
     }
   );
 }
 
-export function createNewCustomer(customer, callback) {
+function createNewCustomer(customer, callback) {
   con.query(
     `insert into MOCK_DATA (
 		id,
@@ -52,20 +56,24 @@ values (
 		'${customer.last_login}'
 	);`,
     (err, result) => {
-      if (err) throw err;
-      callback(c);
+      if (err) {
+        console.error(`Error: ${err.message}`);
+      }
+      callback(err,result)
     }
   );
 }
 
-export function deleteCustomerWithID(id, callback) {
+function deleteCustomerWithID(id, callback) {
   con.query(`DELETE FROM MOCK_DATA WHERE id = ${id};`, (err, result) => {
-    if (err) throw err;
-    callback(result.affectedRows == 1); //if its higher: more than 1 was deleted (not possible except sql injection) lower: row to delete didn't exist ->404
+    if (err) {
+        console.error(`Error: ${err.message}`);
+      }
+    callback(err, result.affectedRows == 1); //if its higher: more than 1 was deleted (not possible except sql injection) lower: row to delete didn't exist ->404
   });
 }
 
-export function updateCustomer(id, customer, callback) {
+function updateCustomer(id, customer, callback) {
   con.query(
     `UPDATE MOCK_DATA SET
             id = ${customer.id},
@@ -79,8 +87,10 @@ export function updateCustomer(id, customer, callback) {
         WHERE id=${id}
         ;`,
     (err, result) => {
-      if (err) throw err;
-      callback((result.affectedRows==1)?c:undefined);
+        if (err) {
+            console.error(`Error: ${err.message}`);
+          }
+          callback(err,result?(result.affectedRows == 1 ? customer : undefined):undefined)     
     }
   );
 }
@@ -114,3 +124,9 @@ export function updateCustomer(id, customer, callback) {
 // updateCustomer(12345,c,(result)=>{
 //     console.log(result)
 // })
+
+exports.getAllCustomers = getAllCustomers;
+exports.getCustomerWithID = getCustomerWithID;
+exports.createNewCustomer = createNewCustomer;
+exports.updateCustomer = updateCustomer;
+exports.deleteCustomerWithID = deleteCustomerWithID;
