@@ -1,6 +1,7 @@
 import { SnapshotIn, SnapshotOrInstance, boolean, identifier, number } from "mobx-state-tree/dist/internal";
 import { IRootInstance, useRootStore } from "../models/root";
 import { Customer } from "../models/customer";
+import { dateToSQL } from "./dateFormater";
 
 export const loadData = (): Promise<SnapshotOrInstance<typeof Customer>[] > => {
   console.log("Fetching data . . .");
@@ -61,9 +62,14 @@ const getCustomer = (id: number): Promise<SnapshotIn<typeof Customer>> => {
     });
 };
 export const createCustomer = (customer: SnapshotOrInstance<typeof Customer>): Promise<boolean> => {
+  let customerFormated={
+    ...customer,
+    birth_date : dateToSQL(customer.birth_date),
+    last_login: dateToSQL(customer.last_login)
+  }
   return fetch("http://localhost:3000/api/customers", {
     method: "POST",
-    body: JSON.stringify(customer),
+    body: JSON.stringify(customerFormated),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
@@ -89,9 +95,16 @@ export const updateCustomer = (
     // ID stays the same
     oldID = customer.id;
   }
+  let customerFormated={
+    ...customer,
+    birth_date : dateToSQL(customer.birth_date),
+    last_login: dateToSQL(customer.last_login)
+  }
+
+
   return fetch(`http://localhost:3000/api/customers/${oldID}`, {
     method: "PUT",
-    body: JSON.stringify(customer),
+    body: JSON.stringify(customerFormated),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
