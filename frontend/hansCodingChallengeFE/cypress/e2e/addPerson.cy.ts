@@ -105,7 +105,7 @@ describe("Test AddPerson", () => {
 });
 
 
-export function validInput() {
+function validInput() {
   cy.get("#CustomerNumberInputField").clear();
   cy.get("#CustomerNumberInputField").type("12345");
   cy.get("#FirstNameInputField").clear();

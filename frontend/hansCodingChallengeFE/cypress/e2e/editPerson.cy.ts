@@ -1,5 +1,3 @@
-import { validInput } from "./addPerson.cy";
-
 describe("Test EditPerson", () => {
   before(() => {
     cy.request({
@@ -46,7 +44,7 @@ describe("Test EditPerson", () => {
   });
 
   it("Allows valid input", () => {
-    validInput();
+    validInputEdit();
 
     // This doesn't actually add the user it just checks the validation
     cy.get("#EditPersonSubmitButton").should("not.be.disabled");
@@ -98,7 +96,7 @@ describe("Test EditPerson", () => {
   });
 
   it("edit the User", () => {
-    validInput();
+    validInputEdit();
     cy.get("#EditPersonSubmitButton").click();
     cy.get("#successInfoAlert").should("exist");
 
@@ -119,3 +117,22 @@ describe("Test EditPerson", () => {
   });
 });
 
+function validInputEdit() {
+  cy.get("#CustomerNumberInputField").clear();
+  cy.get("#CustomerNumberInputField").type("12345");
+  cy.get("#FirstNameInputField").clear();
+  cy.get("#FirstNameInputField").type("Bernd");
+  cy.get("#LastNameInputField").clear();
+  cy.get("#LastNameInputField").type("DasBrot");
+  cy.get("#UserNameInputField").clear();
+  cy.get("#UserNameInputField").type("BrotBernd123");
+  cy.get("#EmailInputField").clear();
+  cy.get("#EmailInputField").type("Bernd@brot.de");
+  cy.get("#BirthdayInputField").clear();
+  cy.get("#BirthdayInputField").type("2003-08-01");
+  cy.get("#PasswordInputField").clear();
+  cy.get("#PasswordInputField").type("IchMag2Brot!");
+  cy.get("#RepeatPasswordInputField").clear();
+  cy.get("#RepeatPasswordInputField").type("IchMag2Brot!");
+  cy.get("#RepeatPasswordInputField").blur();
+}
