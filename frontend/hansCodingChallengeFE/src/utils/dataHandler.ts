@@ -16,7 +16,7 @@ export const loadData = (): Promise<SnapshotOrInstance<typeof Customer>[] > => {
 const getCustomers = (): Promise<
 SnapshotOrInstance<typeof Customer>[]> => {
   try {
-    return fetch("http://localhost:3000/api/customers")
+    return fetch("/api/customers")
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -55,7 +55,7 @@ SnapshotOrInstance<typeof Customer>[]> => {
 };
 
 const getCustomer = (id: number): Promise<SnapshotIn<typeof Customer>> => {
-  return fetch(`http://localhost:3000/api/customers/${id}`)
+  return fetch(`/api/customers/${id}`)
     .then((res) => res.json())
     .then((res) => {
       return res as SnapshotIn<typeof Customer>;
@@ -67,7 +67,7 @@ export const createCustomer = (customer: SnapshotOrInstance<typeof Customer>): P
     birth_date : dateToSQL(customer.birth_date),
     last_login: dateToSQL(customer.last_login)
   }
-  return fetch("http://localhost:3000/api/customers", {
+  return fetch("/api/customers", {
     method: "POST",
     body: JSON.stringify(customerFormated),
     headers: {
@@ -102,7 +102,7 @@ export const updateCustomer = (
   }
 
 
-  return fetch(`http://localhost:3000/api/customers/${oldID}`, {
+  return fetch(`/api/customers/${oldID}`, {
     method: "PUT",
     body: JSON.stringify(customerFormated),
     headers: {
@@ -129,7 +129,7 @@ export const deleteCustomer = (
   if (typeof customer != "number") {
     customer = customer.id;
   }
-  return fetch(`http://localhost:3000/api/customers/${customer}`, {
+  return fetch(`/api/customers/${customer}`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json; charset=UTF-8",

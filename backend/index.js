@@ -4,7 +4,6 @@ import cors from "cors";
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
 import {getCustomerWithID,getAllCustomers,createNewCustomer,deleteCustomerWithID,updateCustomer} from "./mySQL/mySQLHandler.js"
 
 // nothing in root direcory
@@ -114,18 +113,6 @@ app.use((req, res, next) => {
     .send("The page you tried to acces wasn't found on the sever! 404\n");
 });
 
-/*
-// Cors so the api can be easily accessed
-const corsOptions = {
-  origin: "*",
-};
-app.use(
-  cors({
-    origin: "http://localhost",
-    optionsSuccessStatus: 200,
-  })
-);
-*/
 
 // Port is set to env-var EXPRESS_PORT, with port 3000 as default.
 const port = process.env.EXPRESS_PORT ? +process.env.EXPRESS_PORT : 3000;
